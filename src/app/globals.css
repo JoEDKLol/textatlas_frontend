@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* ------------------------------------------- */
+/* 커스텀 애니메이션 정의 시작 */
+/* ------------------------------------------- */
+
+/* Fade-In 애니메이션 키프레임: 투명도 0에서 1로 부드럽게 나타남 */
+@keyframes customFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Slide-Down 애니메이션 키프레임: 위에서 아래로 부드럽게 슬라이드하며 나타남 */
+@keyframes customSlideDown {
+  0% {
+    transform: translateY(-100%); /* 요소가 원래 위치보다 100% 위에 숨어있다가 */
+    opacity: 0; /* 투명도 0으로 시작 */
+  }
+  100% {
+    transform: translateY(0); /* 원래 위치로 내려오며 */
+    opacity: 1; /* 투명도 1로 나타남 */
+  }
+}
+
+/* ------------------------------------------- */
+/* 커스텀 애니메이션 적용 클래스 정의 */
+/* ------------------------------------------- */
+
+/* ------------------------------------------- */
+/* 커스텀 애니메이션 정의 끝 */
+/* ------------------------------------------- */
+
+/* ------------------------------------------- */
+/* 햄버거 버튼 애니메이션 CSS 시작 */
+/* ------------------------------------------- */
+
+/* 햄버거 버튼 컨테이너 스타일 */
+.hamburger-button {
+  width: 30px; /* 버튼의 너비 (조절 가능) */
+  height: 24px; /* 버튼의 높이 (조절 가능) */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 선들 사이에 균등한 공간 배분 */
+  position: relative; /* 자식 요소 포지셔닝을 위한 기준점 */
+  cursor: pointer;
+  z-index: 20; /* 다른 요소 위에 표시되도록 Z-index 설정 */
+  border: none; /* 버튼의 기본 테두리 제거 */
+  background: transparent; /* 버튼의 배경 투명하게 */
+  padding: 0; /* 기본 패딩 제거 */
+  appearance: none; /* 브라우저 기본 스타일 제거 (버튼 요소에 유용) */
+}
+
+/* 햄버거 선의 기본 스타일 */
+.hamburger-line {
+  display: block;
+  width: 100%; /* 부모(hamburger-button) 너비에 맞춤 */
+  height: 2px; /* 선의 두께 (조절 가능) */
+  background-color: #fff; /* 선의 색상 (예: 흰색) */
+  border-radius: 9999px; /* 둥근 모서리 (Tailwind의 rounded-full과 유사) */
+  transition: all 0.3s ease-in-out; /* 모든 변화에 0.3초 동안 부드러운 전환 효과 */
+  transform-origin: center; /* 회전 시 기준점을 중심으로 설정 */
+}
+
+/* 메뉴가 열렸을 때 (X 형태로 변환) */
+/* `.hamburger-button.is-open` 클래스가 추가되면 이 스타일이 적용됩니다. */
+.hamburger-button.is-open .hamburger-line:nth-child(1) {
+  transform: translateY(10.5px) rotate(45deg); /* 첫 번째 선: 아래로 이동 후 45도 회전 */
+}
+
+.hamburger-button.is-open .hamburger-line:nth-child(2) {
+  opacity: 0; /* 두 번째 선: 투명도를 0으로 만들어 사라지게 함 */
+  transform: translateX(-16px); /* 약간 왼쪽으로 이동하며 사라지는 효과 (선택 사항) */
+}
+
+.hamburger-button.is-open .hamburger-line:nth-child(3) {
+  transform: translateY(-10.5px) rotate(-45deg); /* 세 번째 선: 위로 이동 후 -45도 회전 */
+}
+
+/* ------------------------------------------- */
+/* 햄버거 버튼 애니메이션 CSS 끝 */
+/* ------------------------------------------- */
+
+
+/* 햄버거 버튼을 위한 클래스 */
+.hamburger-button-appear {
+  animation: customFadeIn 0.5s ease-out forwards; /* customFadeIn을 0.5초 동안 ease-out으로 실행, 마지막 상태 유지 */
+}
+
+/* 모바일 메뉴 오버레이를 위한 클래스 */
+.mobile-menu-slide-down {
+  animation: customSlideDown 0.3s ease-out forwards; /* customSlideDown을 0.3초 동안 ease-out으로 실행, 마지막 상태 유지 */
+}
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --font-poppins: var(--font-poppins); /* poppins.variable을 통해 정의된 변수 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: var(--font-poppins);
+}
+
+/* 스크롤바 넓이 지정 */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* 스크롤바 트랙 꾸미기 */
+::-webkit-scrollbar-track {
+  background: #dee3e1;
+  border-radius: 5px;
+}
+
+/* 스크롤바 손잡이 꾸미기 */
+::-webkit-scrollbar-thumb {
+  background: #4A6D88;
+  border-radius: 5px;
+}
+
+/* 스크롤바 손잡이 호버 시 색 */
+::-webkit-scrollbar-thumb:hover {
+  background: #283a55;
+}
