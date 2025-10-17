@@ -43,6 +43,10 @@ const languageSet = {
 		{
 			"page":"history", 
 			"text":["Book List", "Word List",  "Sentence List", "Learning", ]
+		},
+		{ //10
+			"page":"history_readbooklist", 
+			"text":["", "Total",  "Reading", "Complete", "Reading Start", "Saved Words", "Saved Sentence", "Word View", "View Sentence", "Read", "Next", "Back", "Save", "Sentences Containing Stored Words", "Translation"]
 		}
 
 	], 
@@ -87,6 +91,10 @@ const languageSet = {
 		{
 			"page":"history", 
 			"text":["책 리스트", "단어 리스트",  "문장 리스트", "학습", ]
+		},
+		{ //10
+			"page":"history_readbooklist", 
+			"text":["권", "전체",  "읽는중", "읽기완료", "읽기 시작일자", "저장한 단어 수", "저장한 문장 수", "단어보기", "문장보기", "읽기", "다음", "뒤로가기", "저장", "저장된 단어가 포함된 문장", "번역보기"]
 		}
 	], 
 
@@ -130,6 +138,10 @@ const languageSet = {
 		{
 			"page":"history", 
 			"text":["Lista de libros", "Lista de palabras",  "Lista de oraciones", "Aprendiendo", ]
+		},
+		{ //10
+			"page":"history_readbooklist", 
+			"text":["", "Total",  "Lectura", "Completo", "Inicio de lecturaa", "Palabras guardadas", "Oración guardada", "Ver palabras", "Ver oración", "Leer", "Siguiente", "Atrás", "Guardar", "Oraciones que contienen palabras almacenadas", "Traducción"]
 		}
 
 	],

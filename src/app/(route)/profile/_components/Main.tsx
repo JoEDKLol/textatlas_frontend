@@ -92,7 +92,7 @@ const Main = (props:any) => {
             </button>
 
           </div>
-          <div className=" flex justify-center 
+          <div className=" flex justify-center pb-20
           w-full 2xl:w-[1050px]  xl:w-[1050px]  lg:w-[790px]  md:w-[530px]  sm:w-[530px]
           ">
             <div style={{
