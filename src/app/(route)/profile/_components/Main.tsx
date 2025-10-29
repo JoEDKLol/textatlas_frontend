@@ -92,21 +92,20 @@ const Main = (props:any) => {
             </button>
 
           </div>
-          <div className=" flex justify-center pb-20
-          w-full 2xl:w-[1050px]  xl:w-[1050px]  lg:w-[790px]  md:w-[530px]  sm:w-[530px]
+          <div className=" flex justify-center pb-20 w-full 
           ">
-            <div style={{
+            <div className=" w-full " style={{
               display: (currentTab === 1)?"block":"none"    
-            }}><ReadBookList userStateSet={userStateSet}/></div>
-            <div style={{
+            }}><ReadBookList userStateSet={userStateSet} currentTab={currentTab} /></div>
+            <div className=" w-full " style={{
               display: (currentTab === 2)?"block":"none"    
-            }}><SavedWordList userStateSet={userStateSet}/></div>
-            <div style={{
+            }}><SavedWordList userStateSet={userStateSet} currentTab={currentTab}/></div>
+            <div className=" w-full " style={{
               display: (currentTab === 3)?"block":"none"    
-            }}><SavedSentenceList userStateSet={userStateSet}/></div>
-            <div style={{
+            }}><SavedSentenceList userStateSet={userStateSet} currentTab={currentTab}/></div>
+            <div className=" w-full " style={{
               display: (currentTab === 4)?"block":"none"    
-            }}><Learn userStateSet={userStateSet}/></div>
+            }}><Learn userStateSet={userStateSet} currentTab={currentTab}/></div>
 
           {/* {
             (currentTab === 1)?

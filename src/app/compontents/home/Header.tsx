@@ -44,7 +44,6 @@ const Hearder = () => {
     }
   },[userStateSet]);
 
-  //페이지이동시 토큰 검증
   useEffect(() => {
 
     setIsMobileMenuOpen(false);

@@ -117,6 +117,7 @@ const ReadBookList = (props:any) => {
   const [selectedBookSentence, setSelectedBookSentence] = useState<number>(0);
 
   
+  
 
   useEffect(() => {
     if(userStateSet.userseq > 0){
@@ -375,9 +376,9 @@ const ReadBookList = (props:any) => {
   const [idleYnS, setIdleYnS] = useState<boolean>(false);
 
   async function clickStarSentence(id:string, importance:number){
-    // if(idleYnS){
-    //   return;
-    // }
+    if(idleYnS){
+      return;
+    }
 
     const sentenceIndex = sentenceListList.findIndex((elem) => elem._id === id);
 
@@ -391,7 +392,7 @@ const ReadBookList = (props:any) => {
 
 
     setIdleYnS(true);
-    // await sleep(300);
+    await sleep(300);
 
 
     const obj = {
@@ -460,9 +461,6 @@ const ReadBookList = (props:any) => {
 
       }
     }
-
-
-
   }
 
   async function seeTranslatorSentenceInSentence(id:string){
@@ -484,12 +482,12 @@ const ReadBookList = (props:any) => {
   
   
   return(
-      <div className="w-full">
+      <div className="w-full flex justify-center">
       {
         (currentPage===0)?
           <div className="flex flex-col w-full items-center ">
             {/* 조회하기 영역 */}
-            <div className="flex  justify-center items-center mt-5 w-full  px-5  flex-col  "> 
+            <div className="flex  justify-center items-center mt-5 w-full  px-5  flex-col   "> 
               <div className="flex flex-1 justify-start items-center h-[30px] mt-3 ">
                 <div className="h-full flex justify-center  ">
                   <div className="relative pl-1  text-[#4A6D88] ">
@@ -515,9 +513,10 @@ const ReadBookList = (props:any) => {
                 </div>
               </div>
             </div>
-            {/* <div className="mt-5 w-full justify-start ps-2"> */}
+           
             <div className="mt-5 flex justify-start items-center px-3 h-[30px]  border-[#4A6D88] text-xs font-bold py-1 rounded text-[#4A6D88]
-              w-full
+              w-[330px] 2xl:w-[1050px]  xl:w-[1050px]  lg:w-[790px]  md:w-[330px]  sm:w-[330px] 
+              
               ">
               <div className="">
                 {(languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[1]:""} {/* 전체 */}
@@ -535,7 +534,7 @@ const ReadBookList = (props:any) => {
                 {(languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[0]:""} {/* 권 */}
               </div>
             </div>
-            {/* </div> */}
+            
             <div className=" flex flex-wrap   
             w-full 2xl:w-[1050px]  xl:w-[1050px]  lg:w-[790px]  md:w-[530px]  sm:w-[530px]
             justify-center 2xl:justify-start  xl:justify-start  lg:justify-start  md:justify-center  sm:justify-center
@@ -634,10 +633,11 @@ const ReadBookList = (props:any) => {
                   )
                 })
               }
+              
             </div>
           
-            <div className="flex justify-end mt-3 w-full  
-            pe-23 2xl:pe-7 xl:pe-7  lg:pe-25  md:pe-23 sm:pe-23
+            <div className="flex flex-wrap justify-end mt-10
+            w-[330px] 2xl:w-[1050px]  xl:w-[1050px]  lg:w-[600px]  md:w-[330px]  sm:w-[330px]
             ">
               <p> {/* 다음  */}
                 <ButtonHisBookListNext text={
@@ -651,7 +651,7 @@ const ReadBookList = (props:any) => {
 
 
         :(currentPage===1)? //단어
-        <div className="w-full 2xl:w-[800px]  xl:w-[800px]  lg:w-[800px]  md:w-[600px]  sm:w-[400px] px-1 ">
+        <div className=" w-full 2xl:w-[800px]  xl:w-[800px]  lg:w-[800px]  md:w-[600px]  sm:w-full px-1 ">
           <div  className="flex shadow-md mt-3 w-full h-[150px] 
             ">
             <div className="flex w-[100px] h-[150px] "> {/* 책이미지 */}
@@ -929,7 +929,7 @@ const ReadBookList = (props:any) => {
           </div>
         </div>
         :(currentPage===2)? //문장
-        <div className="w-full 2xl:w-[800px]  xl:w-[800px]  lg:w-[800px]  md:w-[600px]  sm:w-[400px] px-1  ">
+        <div className=" w-full 2xl:w-[800px]  xl:w-[800px]  lg:w-[800px]  md:w-[600px]  sm:w-full px-1 ">
           <div  className="flex shadow-md mt-3 w-full h-[150px] ">
             <div className="flex w-[100px] h-[150px] "> {/* 책이미지 */}
               <div className="relative left-0 -z-20 w-[100%] ">
@@ -978,11 +978,11 @@ const ReadBookList = (props:any) => {
                   </div>
                   <div>
                     {(languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[5]:""} {/* 저장한 단어 수 */}
-                     : <span className="font-bold">{selectedBook?.saved_word_cnt}</span>
+                     : <span className="font-bold ps-1">{selectedBook?.saved_word_cnt}</span>
                   </div>
                   <div>
                     {(languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[6]:""} {/* 저장한 문장 수 */}
-                     : <span className="font-bold">{selectedBook?.saved_sentence_cnt}</span>
+                     : <span className="font-bold ps-1">{selectedBook?.saved_sentence_cnt}</span>
                   </div>
                   
                   <div className="h-[25px] flex justify-start items-center  text-xs mt-4  ">
@@ -1011,7 +1011,7 @@ const ReadBookList = (props:any) => {
                     </p>
                     <p className="ms-2"> {/* 뒤로가기 */}
                       <ButtonHisBookList text={
-                        (languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[10]:""
+                        (languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[11]:""
                       }
                       onClick={()=>bookListMove()}
                       />
@@ -1057,7 +1057,7 @@ const ReadBookList = (props:any) => {
             }
           </div>
 
-          <div className=" pt-8"> {/* 저장한 단어 리스트 */}
+          <div className=" pt-8"> {/* 저장한 문장 리스트 */}
           {
             sentenceListList.map((elem, index)=>{
               return(
@@ -1170,7 +1170,7 @@ const ReadBookList = (props:any) => {
             })
           }
         </div>
-        <div className="flex justify-end text-xs mt-5">
+        <div className="flex justify-end text-xs mt-10  ">
           <p>
             <ButtonHisBookListNext text={
               (languageStateSet.main_language_set[10])?languageStateSet.main_language_set[10].text[10]:""

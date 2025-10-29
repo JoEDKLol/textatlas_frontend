@@ -222,7 +222,7 @@ const ButtonHisBookListNext = (props:any) => {
       :
       <button
       disabled={props.disabled}
-      className={ ` w-full text-sm bg-[#4A6D88] text-white font-bold  rounded
+      className={ ` w-full text-sm bg-[#d9dcde] text-white font-bold  rounded
       transition-all duration-200 ease-in-out px-1 py-0.5
       `}
       >{props.disabledText}</button>
@@ -231,7 +231,34 @@ const ButtonHisBookListNext = (props:any) => {
   ); 
 }
 
+const ButtonLearning = (props:any) => {
+  return (
+  <>
+    {
+      (!props.disabled)?
+      <button
+      onClick={props.onClick}
+      // disabled={props.disabled}
+      className={ ` w-full border text-[10px] 
+          bg-gray-400 text-white 
+          transition delay-50 duration-100 ease-in-out hover:scale-105
+          py-0.5 px-1 rounded-md cursor-pointer`} 
+      >{props.text}</button>
+      :
+      <button
+      onClick={props.onClick}
+      className={` w-full border text-[10px] 
+      py-0.5 px-1 rounded-md border-gray-400 bg-gray-50
+      transition delay-50 duration-100 ease-in-out hover:scale-105
+      cursor-pointer
+      `} 
+      >{props.disabledText}</button>
+    }
+  </>
+  ); 
+}
+
 export {
   HomeHeaderMenuButton, HomeHeaderSignInButton, HomeHeaderMenuButtonL, HomeHeaderSignInButtonL, ReadingPrev, ReadingNext,
-  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext
+  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning
 };

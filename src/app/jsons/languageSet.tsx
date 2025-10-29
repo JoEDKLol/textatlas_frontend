@@ -46,7 +46,7 @@ const languageSet = {
 		},
 		{ //10
 			"page":"history_readbooklist", 
-			"text":["", "Total",  "Reading", "Complete", "Reading Start", "Saved Words", "Saved Sentence", "Word View", "View Sentence", "Read", "Next", "Back", "Save", "Sentences Containing Stored Words", "Translation"]
+			"text":["", "Total",  "Reading", "Complete", "Reading Start", "Saved Words", "Saved Sentence", "Word View", "View Sentence", "Read", "Next", "Back", "Save", "Sentences Containing Stored Words", "Translation" , "Book" , "Close"]
 		}
 
 	], 
@@ -94,7 +94,7 @@ const languageSet = {
 		},
 		{ //10
 			"page":"history_readbooklist", 
-			"text":["권", "전체",  "읽는중", "읽기완료", "읽기 시작일자", "저장한 단어 수", "저장한 문장 수", "단어보기", "문장보기", "읽기", "다음", "뒤로가기", "저장", "저장된 단어가 포함된 문장", "번역보기"]
+			"text":["권", "전체",  "읽는중", "읽기완료", "읽기 시작일자", "저장한 단어 수", "저장한 문장 수", "단어보기", "문장보기", "읽기", "다음", "뒤로가기", "저장", "저장된 단어가 포함된 문장", "번역보기", "책정보" , "닫기"]
 		}
 	], 
 
@@ -141,7 +141,7 @@ const languageSet = {
 		},
 		{ //10
 			"page":"history_readbooklist", 
-			"text":["", "Total",  "Lectura", "Completo", "Inicio de lecturaa", "Palabras guardadas", "Oración guardada", "Ver palabras", "Ver oración", "Leer", "Siguiente", "Atrás", "Guardar", "Oraciones que contienen palabras almacenadas", "Traducción"]
+			"text":["", "Total",  "Lectura", "Completo", "Inicio de lecturaa", "Palabras guardadas", "Oración guardada", "Ver palabras", "Ver oración", "Leer", "Siguiente", "Atrás", "Guardar", "Oraciones que contienen palabras almacenadas", "Traducción", "Libro", "Cerca"]
 		}
 
 	],
