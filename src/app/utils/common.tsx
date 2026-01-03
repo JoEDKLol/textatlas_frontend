@@ -97,5 +97,23 @@ const getDateContraction2 = (str:string) => {
 }
 
 
+const getChangedMongoDBTimestpamp = (str:string) => {
 
-export  {getRandomNumber, addComma, storeAccessToken, getAccessToken, getDate, clearAccessToken, getDateContraction, getDateContraction2}
+	const date = new Date(str); // UTC 시간
+// // 로컬 시간(한국 기준)으로 변환하기 위해 시간 추가
+	// const localDate = new Date(utcDate.getTime() + (9 * 60 * 60 * 1000))
+	var year = date.getFullYear().toString(); //년도 뒤에 두자리
+	var month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
+	var day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
+	var hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
+	var minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
+	var second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
+
+	return  month + "." + day + "." + year  +  " " + hour + ":" + minute + ":" + second
+
+}
+
+
+export  {getRandomNumber, addComma, storeAccessToken, getAccessToken, getDate, clearAccessToken
+	, getDateContraction, getDateContraction2,getChangedMongoDBTimestpamp,
+}

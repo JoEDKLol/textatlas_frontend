@@ -258,7 +258,27 @@ const ButtonLearning = (props:any) => {
   ); 
 }
 
+const ButtonBase = (props:any) => {
+  return (
+  <button 
+  className={`border border-[#4A6D88] w-full text-[14px] bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold py-1 px-3 rounded
+  transition-all duration-200 ease-in-out cursor-pointer`}
+  onClick={props.onClick}
+  >{props.text}</button>
+  ); 
+}
+
+const ButtonBaseAddTags = (props:any) => {
+  return (
+  <button 
+  className={`border border-[#4A6D88] text-[12px] w-[100px] bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold py-1 px-4 rounded-2xl
+  transition-all duration-200 ease-in-out cursor-pointer`}
+  onClick={props.onClick}
+  >{props.text}</button>
+  ); 
+}
+
 export {
   HomeHeaderMenuButton, HomeHeaderSignInButton, HomeHeaderMenuButtonL, HomeHeaderSignInButtonL, ReadingPrev, ReadingNext,
-  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning
+  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning, ButtonBase, ButtonBaseAddTags
 };

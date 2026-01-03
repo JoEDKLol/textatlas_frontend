@@ -7,7 +7,10 @@ const Layout = () => {
   const userStateSet = userState();
   return(
     <>
-      <Main/>
+      {
+      (userStateSet.id)?  
+      <Main userStateSet={userStateSet}/>:<LoginRequestScreen/>
+      }
     </> 
   );
 };

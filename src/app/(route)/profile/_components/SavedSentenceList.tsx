@@ -436,7 +436,7 @@ const SavedSentenceList = (props:any) => {
                     </div>
                     <div className="ps-3 flex items-center mt-1 w-full">
 
-                      <div className=""
+                      <div className=" "
                     
                       >
                       { /* 번역보기 */
@@ -460,7 +460,7 @@ const SavedSentenceList = (props:any) => {
 
                       </div>
 
-                      <div className="flex justify-center items-center ps-1 pt-[2px]">
+                      <div className="flex justify-center items-center ps-1 ">
 
                         <ButtonTranslator /* 책정보 */
                         text={ 

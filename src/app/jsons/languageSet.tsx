@@ -47,6 +47,14 @@ const languageSet = {
 		{ //10
 			"page":"history_readbooklist", 
 			"text":["", "Total",  "Reading", "Complete", "Reading Start", "Saved Words", "Saved Sentence", "Word View", "View Sentence", "Read", "Next", "Back", "Save", "Sentences Containing Stored Words", "Translation" , "Book" , "Close"]
+		},
+		{ //11
+			"page":"history_learning", 
+			"text":["Word", "Sentence", "Total", "Learning", "Complete", "Study Completed", "Word View", "Completed", "View Sentence", "Again", "Check"]
+		},
+		{ //12
+			"page":"writing", 
+			"text":["Writing", "Title", "Save", "Add tag", "Success!", "Go to the community.", "Check!", "The number of characters is more than 4000."]
 		}
 
 	], 
@@ -95,6 +103,14 @@ const languageSet = {
 		{ //10
 			"page":"history_readbooklist", 
 			"text":["권", "전체",  "읽는중", "읽기완료", "읽기 시작일자", "저장한 단어 수", "저장한 문장 수", "단어보기", "문장보기", "읽기", "다음", "뒤로가기", "저장", "저장된 단어가 포함된 문장", "번역보기", "책정보" , "닫기"]
+		},
+		{ //11
+			"page":"history_learning", 
+			"text":["단어","문장","전체", "학습중", "완료", "학습완료", "단어보기", "학습완료", "문장보기", "다시하기", "정답확인"]
+		},
+		{ //12
+			"page":"writing", 
+			"text":["글쓰기", "제목", "저장", "태그 추가", "성공!", "커뮤니티로 이동합니다.", "확인!", "4000자 이상입니다."]
 		}
 	], 
 
@@ -142,7 +158,16 @@ const languageSet = {
 		{ //10
 			"page":"history_readbooklist", 
 			"text":["", "Total",  "Lectura", "Completo", "Inicio de lecturaa", "Palabras guardadas", "Oración guardada", "Ver palabras", "Ver oración", "Leer", "Siguiente", "Atrás", "Guardar", "Oraciones que contienen palabras almacenadas", "Traducción", "Libro", "Cerca"]
+		},
+		{ //11
+			"page":"history_learning", 
+			"text":["Palabra", "Oración", "Total",  "Lectura", "Completo", "Estudio completado", "Ver palabras", "Terminado", "Ver oración", "De nuevo", "Controlar"]
+		},
+		{ //12
+			"page":"writing", 
+			"text":["Escribiendo", "Título", "Ahorrar", "Añadir tag", "Éxito!", "Ve a la comunidad.", "¡Comprobado!", "El número de caracteres es superior a 4000."]
 		}
+		
 
 	],
 

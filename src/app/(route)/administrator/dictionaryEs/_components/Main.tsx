@@ -258,6 +258,25 @@ const Main = (props:any) => {
 
   }
 
+  function test(content:any, delta:any, source:any, editor:any){
+    // console.log(editor.getLength());
+    // if (editor.getLength() > 10) {
+    //   // 최대 글자수를 초과하면 이전 값으로 되돌리거나, 마지막 글자만 남김
+    //   console.log(111111);
+      
+    //   // editor.setText(editor.getText(0, 10));
+    //   // editor.getText(0, 10);
+    //   setQuilltest(editor.getText(0, 10));
+    //   // setValue(editor.getText(0, 10));
+
+    // } else {
+    //   console.log(2222222);
+    //   setValue(content);
+    // }
+    setContent(content);
+
+  }
+
   return(<>
     <div className=" mt-[60px] h-[90vh] w-full">
       <div className="flex  justify-center items-center mt-[60px] w-full   ">
@@ -369,7 +388,7 @@ const Main = (props:any) => {
             </div>
             <div className="text-red-500 text-xs">{saveResMsg}</div>
             {/* 단어 선택시 상세보기 */}
-            <QuillEditorScreen bgColor={"#ffffff"} content={content} setContent={setContent} readOnly={false} styleType="style"  />
+            <QuillEditorScreen bgColor={"#ffffff"} content={content} onChange={test} readOnly={false} styleType="style"  />
           </div>
           
 

@@ -36,7 +36,7 @@ import { transactionAuth } from "@/app/utils/axiosAuth";
 let searchFrom = false;
 
 const Main = (props:any) => {
-
+ 
   const router = useRouter();
   const userStateSet = props.userStateSet;
 

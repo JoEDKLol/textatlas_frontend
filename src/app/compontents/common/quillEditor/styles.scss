@@ -1,13 +1,29 @@
 .quill.style {
   .ql-toolbar {
     // border-bottom: 1px solid red;
-    background-color: white;
+    // background-color: white;
+    border-radius: 10px 10px 0px 0px;
+    border-top: 1px solid ;
+    border-left: 1px solid ;
+    border-right: 1px solid ;
+    border-bottom: 1px solid ;
+
   }
-  // .ql-container {
-  //   // border-left: 1px solid red;
-  //   // border-right: 1px solid red;
-  //   // border-bottom: 1px solid red;
-  //   // border:none;
+  .ql-container {
+    border-left: 1px solid ;
+    border-right: 1px solid ;
+    border-bottom: 1px solid ;
+    border-radius: 0px 0px 10px 10px;
+    // min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
     
-  // }
+  }
+
+  
+  
 }
+
+
+
+
