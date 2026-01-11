@@ -27,12 +27,21 @@ interface tagItf {
   tagname:string
 }
 
+interface tagSearchYnItf {
+  style:string
+  tagYn:boolean
+}
+
 interface bookListState {
   communityList: communityItf[] ;
   lastSeq:number;
   text:string;
   tagName:tagItf[];
   searchTagList:any;
+  tagSearchYn:tagSearchYnItf;
+  tagText:string;
+  tagSearchYnSet : (obj:any) => void;
+  tagTextSet :  (tagText:string) => void;
   textSet :  (text:string) => void;
   lastSeqSet :  (page:number) => void;
   communityListSet: (community:any) => void;
@@ -50,6 +59,10 @@ const communityState = create<bookListState>((set) => ({
   text : "",
   tagName:[],
   searchTagList:[],
+  tagSearchYn:{style:" h-[60px] ", tagYn:false},
+  tagText:"",
+  tagSearchYnSet:(obj:any) => {set({tagSearchYn:obj})},
+  tagTextSet: (tagText:string) => {set({ tagText: tagText })},
   textSet: (search:string) => {set({ text: search })},
   lastSeqSet: (page:number) => {set({ lastSeq: page })},
   communityListSet: (community: communityItf[]) => set({communityList: community}),

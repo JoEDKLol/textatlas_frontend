@@ -2,7 +2,7 @@ import Image from "next/legacy/image";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { FaRegCommentDots } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { transaction } from "@/app/utils/axios";
 import loadingScreenShow from "@/app/store/loadingScreen";
 import errorScreenShow from "@/app/store/errorScreen";
@@ -14,28 +14,28 @@ import languageState from "@/app/store/language";
 import communityState from "@/app/store/communities";
 import { ButtonBaseAddTags } from "@/app/compontents/design/buttons/Buttons";
 
-interface userInfoItf {
-  userseq:number
-  email:string
-  username:string
-  userimg:string
-  userthumbImg:string
-}
+// interface userInfoItf {
+//   userseq:number
+//   email:string
+//   username:string
+//   userimg:string
+//   userthumbImg:string
+// }
 
-interface communityItf {
-  _id:string
-  community_seq:number
-  userseq:string
-  title:string
-  contents:string
-  hashtags:[]
-  likecnt:number
-  commentcnt:number
-  userinfo:userInfoItf
-  regdate:string
-}
+// interface communityItf {
+//   _id:string
+//   community_seq:number
+//   userseq:string
+//   title:string
+//   contents:string
+//   hashtags:[]
+//   likecnt:number
+//   commentcnt:number
+//   userinfo:userInfoItf
+//   regdate:string
+// }
 
-interface communityListItf extends Array<communityItf>{}
+// interface communityListItf extends Array<communityItf>{}
 
 let searchFrom = false;  
 
@@ -55,12 +55,13 @@ const Main = (props:any) => {
   // const [lastSeq, setLastSeq] = useState<number>(0);
   // const [communityList, setCommunityList] = useState<communityListItf>([]);
 
-  const [searchAreaClass, setSerchAreaClass] = useState({style:" h-[100px] ", tagYn:false});
+  const [searchAreaClass, setSerchAreaClass] = useState({style:" h-[60px] ", tagYn:false});
 
   
+  const focusTagSearch = useRef<HTMLInputElement>(null);
   
   //화면 실행 여부
-  const [firstSearch, setFirstSearch] = useState<boolean>(false);
+  // const [firstSearch, setFirstSearch] = useState<boolean>(false);
 
   // setWordSearchSeq(retObj.sendObj.resObj[lastArr].seq);
 
@@ -168,12 +169,7 @@ const Main = (props:any) => {
     }
   }
 
-  function searchTextOnKeyDownHandler(e:any){
-    if(e.key === 'Enter') {
-      // readingsFromSearch();
-      searchFormCommunityList();
-    }
-  }
+  
 
   function search(){
     // readingsFromSearch();
@@ -183,35 +179,84 @@ const Main = (props:any) => {
   function searchTextOnChangeHandler(e:any){
     // setSearchText(e.target.value);
     // setChangedSearchText(true);
+    console.log("1");
     communityStateSet.textSet(e.target.value);
+  }
+
+  function searchTextOnKeyDownHandler(e:any){
+    if(e.key === 'Enter') {
+      // readingsFromSearch();
+      searchFormCommunityList();
+    }
   }
 
   function writingPage(){
     router.push('/community/writing');
   }
 
-  function addTags(){
-    if(searchAreaClass.tagYn){
-      setSerchAreaClass({style:" h-[100px] ", tagYn:false});
+  function addTagSearch(){
+    if(communityStateSet.tagSearchYn.tagYn){
+      // setSerchAreaClass({style:" h-[60px] ", tagYn:false});
+
+      communityStateSet.tagSearchYnSet({style:" h-[60px] ", tagYn:false});
+
     }else{
-      console.log("??");
-      setSerchAreaClass({style:" h-[230px] ", tagYn:true});
+      // setSerchAreaClass({style:" h-[230px] shadow-md ", tagYn:true});
+      communityStateSet.tagSearchYnSet({style:" h-[230px] shadow-md ", tagYn:true});
     }
     
   }
   
   function addTagText(){
-    communityStateSet.searchTagListDelete(0);
-    console.log(communityStateSet.searchTagList);
+    const getHashTagText = communityStateSet.tagText.trim();
+    if(!getHashTagText){
+      return;
+    }
+
+    if(communityStateSet.searchTagList.length > 9){ 
+      return;
+    }
+
+    //이미 있는 tag 인경우 리턴
+    if(communityStateSet.searchTagList.indexOf(getHashTagText) > -1){
+      focusTagSearch.current?.focus();
+      return;
+    }
+
+    communityStateSet.searchTagListAdd(getHashTagText);
+    communityStateSet.tagTextSet("");
   }
 
   function addTag(index:number){
-    
+
+    if(communityStateSet.searchTagList.length > 9){ 
+      return;
+    }
+
     const tagName = communityStateSet.tagName[index].tagname;
-    console.log(tagName);
+
+    //이미 있는 tag 인경우 리턴
+    if(communityStateSet.searchTagList.indexOf(tagName) > -1){
+      return;
+    }
+    
     communityStateSet.searchTagListAdd(tagName);
-    // communityStateSet.searchTagListDelete(index);
-    console.log(communityStateSet.searchTagList);
+  }
+
+  function deleteTag(index:number){
+    communityStateSet.searchTagListDelete(index);
+  }
+
+  function searchTagTextOnChangeHandler(e:any){
+    // setSearchText(e.target.value);
+    // setChangedSearchText(true);
+    communityStateSet.tagTextSet(e.target.value);
+  }
+
+  function searchTagTextOnKeyDownHandler(e:any){
+    if(e.key === 'Enter') {
+      addTagText();
+    }
   }
   
   return(
@@ -223,7 +268,7 @@ const Main = (props:any) => {
           <div className="flex flex-col max-w-[700px] w-[95%] justify-center items-center  ">
 
             {/* 조회하기 영역 */}
-            <div className={searchAreaClass.style + ` overflow-hidden fixed top-[30px] flex flex-col  justify-start  mt-5  w-full px-10 py-5 bg-white  z-1 border transition-all ease-in-out duration-300 `}> 
+            <div className={communityStateSet.tagSearchYn.style + ` overflow-hidden fixed top-[30px] flex flex-col  justify-start  mt-5  w-full px-10 py-5 bg-white  z-1 transition-all ease-in-out duration-300 `}> 
               <div className="flex justify-center ">
                 <div className="flex justify-start items-center h-[30px]   ">
                   <div className="h-full flex justify-center  ">
@@ -256,7 +301,7 @@ const Main = (props:any) => {
                     <button className="border border-[#4A6D88] w-[30px] text-[20px] bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold  rounded
                     transition-all duration-200 ease-in-out cursor-pointer
                     "
-                    onClick={()=>addTags()}
+                    onClick={()=>addTagSearch()}
                     >
                       {/* {languageStateSet.main_language_set[1].text[0]} */}
                       {/* {(languageStateSet.main_language_set[1])?languageStateSet.main_language_set[6].text[2]:""} */}
@@ -279,8 +324,39 @@ const Main = (props:any) => {
                   </div>
                 </div>
               </div>
+
+              <div className="flex flex-col items-center  ">
+                <div className=" h-[50px]  mt-2 pb-1
+                  w-[300px] 2xl:w-[650px] xl:w-[650px] lg:w-[650px] md:w-[650px] sm:w-[650px] overflow-y-auto
+                  " >
+
+                  {/* {
+                    
+                  } */}
+
+
+                  {
+                    communityStateSet.searchTagList.map((elem:any, index:number)=>{
+                      return(
+
+                       
+
+                        <div key={index + "taglist"} className="inline-block relative h-[20px] bg-[#5f89aa] text-white rounded-[8px] border text-[10px] pt-[2px]  ps-2 pe-5 me-1">
+                          {elem}
+                          <button className="absolute -top-[1px] right-[6px] font-bold text-[12px] cursor-pointer ms-3 
+                          transition-transform duration-300 ease-in-out hover:scale-120 transform "
+                          onClick={()=>deleteTag(index)}
+                          >x</button>
+                        </div>
+                        
+                      )
+                    })
+                  }
+                </div>
+              </div>
+              
               {/* add tag 조회 조건 */}
-              <div className="flex flex-col items-center mt-[50px] ">
+              <div className="flex flex-col items-center mt-3 ">
                 <div className=" flex justify-between  
                 w-[300px] 2xl:w-[450px] xl:w-[450px] lg:w-[450px] md:w-[450px] sm:w-[450px]
                 ">
@@ -290,15 +366,16 @@ const Main = (props:any) => {
                     {/* <span className="inline-block">abasdfasdfsadf</span> */}
                     <input className="h-full px-2 font-bold w-full   bg-gray-100 text-xs rounded-[10px] placeholder:font-light "
                     // placeholder={(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[1]:""} 
-                    // ref={focusHashTag}
-                    // value={hashTagText}
-                    // onChange={(e)=>hashTagTextChange(e)}
+                    ref={focusTagSearch}
+                    value={communityStateSet.tagText}
+                    onChange={(e)=>searchTagTextOnChangeHandler(e)}
+                    onKeyDown={(e)=>searchTagTextOnKeyDownHandler(e)}
                     />
                     {/* <span className="absolute right-3 top-[6px] text-xs text-red-500">{`${hashTagsArr.length} / 10`}</span> */}
 
                   </div>
-
-                  <div className=" ms-1  ">
+                  {/* 태그 추가 */}
+                  <div className=" ms-2  "> 
                     <ButtonBaseAddTags text={(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[3]:""}
                     onClick={()=>addTagText()}
                     />
