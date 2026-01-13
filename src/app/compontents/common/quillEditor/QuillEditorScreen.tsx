@@ -4,6 +4,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import ReactQuill from "react-quill-new";
 import './styles.scss';
 import './styles2.scss';
+import './styles3.scss';
 import loadingScreenShow from '@/app/store/loadingScreen';
 import errorScreenShow from '@/app/store/errorScreen';
 import QuillNoSSRWrapper from './QuillEditor';
@@ -86,17 +87,16 @@ const QuillEditorScreen = (props:any) => {
   );
 
   const styles = 
-    {
-      backgroundColor:props.bgColor,
-      // width: ""
-      // height :"200px",
-      // borderRadius:""
-      // border-left: 1px solid red;
-      // border-right: 1px solid red;
-      // border-bottom: 1px solid red;
-    };
-    
-  const limit = 1000;
+  {
+    backgroundColor:props.bgColor,
+    // width: ""
+    // height :"200px",
+    // borderRadius:""
+    // border-left: 1px solid red;
+    // border-right: 1px solid red;
+    // border-bottom: 1px solid red;
+  };
+  
 
   
 

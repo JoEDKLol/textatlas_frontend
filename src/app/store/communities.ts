@@ -59,7 +59,7 @@ const communityState = create<bookListState>((set) => ({
   text : "",
   tagName:[],
   searchTagList:[],
-  tagSearchYn:{style:" h-[60px] ", tagYn:false},
+  tagSearchYn:{style:" h-[110px] ", tagYn:false},
   tagText:"",
   tagSearchYnSet:(obj:any) => {set({tagSearchYn:obj})},
   tagTextSet: (tagText:string) => {set({ tagText: tagText })},

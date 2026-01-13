@@ -7,6 +7,7 @@ import AuthSession from "./api/auth/AuthSession";
 import ErrorScreen from "./compontents/common/errorScreen/Index";
 import LoadingScreen from "./compontents/common/loadingScreen/Index";
 import AlertPopup from "./compontents/design/popup/AlertPopup";
+import LoadingScreen2 from "./compontents/common/loadingScreen/Index2";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
         <AuthSession>
           <CommonTransaction>
             <LoadingScreen/>
+            <LoadingScreen2/>
             <ErrorScreen/>
             <AlertPopup/>
             <div id="portal" />

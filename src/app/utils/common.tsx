@@ -99,6 +99,9 @@ const getDateContraction2 = (str:string) => {
 
 const getChangedMongoDBTimestpamp = (str:string) => {
 
+	if(!str){
+		return;
+	}
 	const date = new Date(str); // UTC 시간
 // // 로컬 시간(한국 기준)으로 변환하기 위해 시간 추가
 	// const localDate = new Date(utcDate.getTime() + (9 * 60 * 60 * 1000))

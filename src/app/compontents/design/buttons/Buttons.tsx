@@ -278,7 +278,31 @@ const ButtonBaseAddTags = (props:any) => {
   ); 
 }
 
+const ButtonCommentSave = (props:any) => {
+  return (
+  <>
+    {
+      (!props.disabled)?
+      <button
+      onClick={props.onClick}
+      // disabled={props.disabled}
+      className={ ` border border-[#4A6D88] w-full text-xs bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white   rounded
+      transition-all duration-200 ease-in-out cursor-pointer px-1 py-0.5
+     `} 
+      >{props.text}</button>
+      :
+      <button
+      disabled={props.disabled}
+      className={ ` w-full text-xs bg-[#d9dcde] text-white font-bold  rounded
+      transition-all duration-200 ease-in-out px-1 py-0.5
+      `}
+      >{props.disabledText}</button>
+    }
+  </>
+  ); 
+}
+
 export {
   HomeHeaderMenuButton, HomeHeaderSignInButton, HomeHeaderMenuButtonL, HomeHeaderSignInButtonL, ReadingPrev, ReadingNext,
-  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning, ButtonBase, ButtonBaseAddTags
+  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning, ButtonBase, ButtonBaseAddTags, ButtonCommentSave
 };

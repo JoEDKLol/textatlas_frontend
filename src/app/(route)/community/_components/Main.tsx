@@ -108,9 +108,11 @@ const Main = (props:any) => {
     const obj = {
       keyword:communityStateSet.text,
       lastSeq:communityStateSet.lastSeq,
+      // tagYn:communityStateSet.tagSearchYn.tagYn,
+      searchTagList:communityStateSet.searchTagList,
     }
 
-    const retObj = await transaction("get", "community/communitylistsearch", obj, "", false, true, screenShow, errorShow);
+    const retObj = await transaction("post", "community/communitylistsearch", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){ 
 
       if(retObj.sendObj.resObj.length > 0){
@@ -133,9 +135,11 @@ const Main = (props:any) => {
     const obj = {
       keyword:communityStateSet.text,
       lastSeq:0,
+      // tagYn:communityStateSet.tagSearchYn.tagYn,
+      searchTagList:communityStateSet.searchTagList,
     }
 
-    const retObj = await transaction("get", "community/communitylistsearch", obj, "", false, true, screenShow, errorShow);
+    const retObj = await transaction("post", "community/communitylistsearch", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){ 
 
       if(retObj.sendObj.resObj.length > 0){
@@ -179,7 +183,6 @@ const Main = (props:any) => {
   function searchTextOnChangeHandler(e:any){
     // setSearchText(e.target.value);
     // setChangedSearchText(true);
-    console.log("1");
     communityStateSet.textSet(e.target.value);
   }
 
@@ -198,7 +201,7 @@ const Main = (props:any) => {
     if(communityStateSet.tagSearchYn.tagYn){
       // setSerchAreaClass({style:" h-[60px] ", tagYn:false});
 
-      communityStateSet.tagSearchYnSet({style:" h-[60px] ", tagYn:false});
+      communityStateSet.tagSearchYnSet({style:" h-[110px] ", tagYn:false});
 
     }else{
       // setSerchAreaClass({style:" h-[230px] shadow-md ", tagYn:true});
@@ -259,16 +262,21 @@ const Main = (props:any) => {
     }
   }
   
+  function communityDetail(seq:number){
+    console.log(seq);
+    router.push('/community/' + seq);
+  }
+
   return(
     <>
     <div className="">
-      <div className="h-[55px] w-full"></div> {/* 상단 헤더 만큼 아래로 */}
-      <div className="w-full ">
+      <div className="h-[55px] w-full "></div> {/* 상단 헤더 만큼 아래로 */}
+      <div className="w-full  ">
         <div className="flex justify-center ">
           <div className="flex flex-col max-w-[700px] w-[95%] justify-center items-center  ">
 
             {/* 조회하기 영역 */}
-            <div className={communityStateSet.tagSearchYn.style + ` overflow-hidden fixed top-[30px] flex flex-col  justify-start  mt-5  w-full px-10 py-5 bg-white  z-1 transition-all ease-in-out duration-300 `}> 
+            <div className={communityStateSet.tagSearchYn.style + ` overflow-hidden fixed top-[40px] flex flex-col  justify-start  mt-5  w-full px-10 py-5 bg-white  z-1 transition-all ease-in-out duration-300 `}> 
               <div className="flex justify-center ">
                 <div className="flex justify-start items-center h-[30px]   ">
                   <div className="h-full flex justify-center  ">
@@ -326,7 +334,7 @@ const Main = (props:any) => {
               </div>
 
               <div className="flex flex-col items-center  ">
-                <div className=" h-[50px]  mt-2 pb-1
+                <div className=" h-[50px]  mt-2 pb-1 
                   w-[300px] 2xl:w-[650px] xl:w-[650px] lg:w-[650px] md:w-[650px] sm:w-[650px] overflow-y-auto
                   " >
 
@@ -403,13 +411,15 @@ const Main = (props:any) => {
                                 
               </div>
             </div>
-            <div className="mt-20"></div>
+            <div className="mt-30"></div>
             {
               communityStateSet.communityList?.map((elem, index)=>{
                 return(
                 <div key={index} className="w-full flex flex-col items-center ">
                   <div  className="flex justify-center w-[95%] my-3 max-h-[350px]  ">
-                    <div className="flex flex-col w-full h-full rounded-2xl  px-4 py-2 hover:bg-gray-100  ">
+                    <div className="flex flex-col w-full h-full rounded-2xl  px-4 py-2 hover:bg-gray-100 cursor-pointer  "
+                    onClick={()=>communityDetail(elem.community_seq)}
+                    >
                       {/* 상단 - 개인 프로필 이미지, 닉네임, 게시물 등록 시간 */} 
                       <div className="flex justify-between items-center h-[30px]  " >
                         <div className="flex text-xs text-[#4A6D88]">
@@ -448,7 +458,7 @@ const Main = (props:any) => {
                           <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elem.regdate)}</div> 
                         </div>
                         <div></div>
-                      </div>  
+                      </div>
 
                       {/* 제목 */}
                       <div className=" max-h-[120px] line-clamp-2 text-base font-bold break-all mt-2 ">
@@ -474,11 +484,11 @@ const Main = (props:any) => {
                       elem.hashtags.map((elem2, index2)=>{
                         return(
                           <div key={index2 + "hashTag"} className=" inline-block pt-[2px] items-center h-[20px] bg-white text-[#4A6D88]
-                          border-[#4A6D88] font-bold
-                          rounded-[8px] border text-[10px] px-3
-                          me-1">
-                          {elem2}
-                        </div>
+                            border-[#4A6D88] font-bold
+                            rounded-[8px] border text-[10px] px-3
+                            me-1">
+                            {elem2}
+                          </div>
                         )
                       })
                     }

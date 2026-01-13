@@ -55,6 +55,10 @@ const languageSet = {
 		{ //12
 			"page":"writing", 
 			"text":["Writing", "Title", "Save", "Add tag", "Success!", "Go to the community.", "Check!", "The number of characters is more than 4000."]
+		},
+		{ //13
+			"page":"detail", 
+			"text":["comment"]
 		}
 
 	], 
@@ -111,6 +115,10 @@ const languageSet = {
 		{ //12
 			"page":"writing", 
 			"text":["글쓰기", "제목", "저장", "태그 추가", "성공!", "커뮤니티로 이동합니다.", "확인!", "4000자 이상입니다."]
+		},
+		{ //13
+			"page":"detail", 
+			"text":["댓글쓰기"]
 		}
 	], 
 
@@ -166,6 +174,10 @@ const languageSet = {
 		{ //12
 			"page":"writing", 
 			"text":["Escribiendo", "Título", "Ahorrar", "Añadir tag", "Éxito!", "Ve a la comunidad.", "¡Comprobado!", "El número de caracteres es superior a 4000."]
+		},
+		{ //13
+			"page":"detail", 
+			"text":["comentario"]
 		}
 		
 
