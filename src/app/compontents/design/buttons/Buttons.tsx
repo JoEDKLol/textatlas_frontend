@@ -302,7 +302,18 @@ const ButtonCommentSave = (props:any) => {
   ); 
 }
 
+const ButtonSubComment = (props:any) => {
+  return (
+  <button 
+  className={`border border-[#4A6D88] text-[9px] w-[80px] bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold py-1 px-3 rounded-2xl
+  transition-all duration-200 ease-in-out cursor-pointer`}
+  onClick={props.onClick}
+  >{props.text}</button>
+  ); 
+}
+
 export {
   HomeHeaderMenuButton, HomeHeaderSignInButton, HomeHeaderMenuButtonL, HomeHeaderSignInButtonL, ReadingPrev, ReadingNext,
-  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning, ButtonBase, ButtonBaseAddTags, ButtonCommentSave
+  ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning, ButtonBase, ButtonBaseAddTags, ButtonCommentSave,
+  ButtonSubComment
 };

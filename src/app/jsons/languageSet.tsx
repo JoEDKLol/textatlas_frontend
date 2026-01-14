@@ -58,7 +58,7 @@ const languageSet = {
 		},
 		{ //13
 			"page":"detail", 
-			"text":["comment"]
+			"text":["Comment", "Reply"]
 		}
 
 	], 
@@ -118,7 +118,7 @@ const languageSet = {
 		},
 		{ //13
 			"page":"detail", 
-			"text":["댓글쓰기"]
+			"text":["댓글쓰기", "대댓글쓰기"]
 		}
 	], 
 
@@ -177,7 +177,7 @@ const languageSet = {
 		},
 		{ //13
 			"page":"detail", 
-			"text":["comentario"]
+			"text":["comentario", "Responder"]
 		}
 		
 

@@ -118,7 +118,7 @@ const Main = (props:any) => {
       if(retObj.sendObj.resObj.length > 0){
         // setCommunityList([...communityList,  ...retObj.sendObj.resObj]);
         const lastArr = retObj.sendObj.resObj.length-1;
-        communityStateSet.lastSeqSet(retObj.sendObj.resObj[lastArr].community_seq)
+        communityStateSet.lastSeqSet(retObj.sendObj.resObj[lastArr].community_seq);
         communityStateSet.communityListAdd(retObj.sendObj.resObj);
         
       }
