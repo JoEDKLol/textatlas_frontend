@@ -19,6 +19,7 @@ interface userState {
   firstLogin : boolean
   socialLogin : boolean
   preferred_trans_lang : string
+  introduction : string
   userSet: (obj:any) => void;
   preferredTransLangSet: (obj:string) => void;
 }
@@ -40,6 +41,7 @@ const userState = create<userState>((set) => ({
   firstLogin : false, 
   socialLogin : false, 
   preferred_trans_lang : "",
+  introduction : "",
   userSet: (obj:any) => {set({ 
     id:obj.id, email:obj.email, userseq:obj.userseq, username:obj.username, 
     userimg:obj.userimg, userthumbImg : obj.userthumbImg, role:obj.role, 
@@ -50,8 +52,13 @@ const userState = create<userState>((set) => ({
     firstLogin:obj.firstLogin, 
     socialLogin:obj.socialLogin, 
     preferred_trans_lang:obj.preferred_trans_lang,
+    introduction:obj.introduction,
      })},
-  preferredTransLangSet : (lang:string) => {set({preferred_trans_lang:lang})}
+  preferredTransLangSet : (lang:string) => {set({preferred_trans_lang:lang})},
+  usernameSet: (value:string) => {set({ username: value })},
+  userimgSet: (value:string) => {set({ userimg: value })},
+  userthumbImgSet: (value:string) => {set({ userthumbImg: value })},
+  introductionSet: (value:string) => {set({ introduction: value })},
 
 }));
 

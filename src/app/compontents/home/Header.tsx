@@ -34,6 +34,7 @@ const Hearder = () => {
   const [readingsYn, setReadingsYn] = useState(false);
   const [communityYn, setCommunityYn] = useState(false);
   const [profileYn, setProfileYn] = useState(false);
+  const [myInfoYn, setMyInfoYn] = useState(false);
   
 
   useEffect(()=>{
@@ -52,6 +53,7 @@ const Hearder = () => {
     setReadingsYn(false);
     setCommunityYn(false);
     setProfileYn(false);
+    setMyInfoYn(false);
     
     if(path === "/home"){
       setHomeYn(true);
@@ -61,6 +63,8 @@ const Hearder = () => {
       setCommunityYn(true);
     }else if(path === "/profile"){
       setProfileYn(true);
+    }else if(path === "/myinfo"){
+      setMyInfoYn(true);
     }
 
     
@@ -108,7 +112,7 @@ const Hearder = () => {
   useEffect(() => {
 
     if(isMobileMenuOpen){
-      setBlock("  translate duration-200 h-[310px] ");
+      setBlock("  translate duration-200 h-[350px] ");
     }else{
       setBlock("  translate duration-200 h-[55px] ");
     }
@@ -197,6 +201,10 @@ const Hearder = () => {
   function profilePage(){
     router.push('/profile');
   }
+
+  function myInfo(){
+    router.push('/myinfo');
+  }
   
   return(
     <header className={block + ` fixed top-0 left-0 w-full z-30 bg-[#4A6D88] items-start 
@@ -258,6 +266,18 @@ const Hearder = () => {
             }
             
           </p> {/* 로그인 이후에 보임 */}
+
+          <p className=" text-start ms-10 ">
+            {
+              (signinYn)?
+              <HomeHeaderMenuButton text={languageStateSet.main_language_set[0].text[4]} disabled={myInfoYn}
+              onClick={()=>myInfo()}
+              />
+              :""
+            }
+            
+          </p> {/* 로그인 이후에 보임 */}
+
         </div>
         <div className=" 2xl:w-[60px] xl:w-[60px] lg:w-[60px] md:w-full sm:w-full w-full 
         flex justify-end items-center pt-[2px] 
@@ -349,6 +369,15 @@ const Hearder = () => {
           <p className="px-10 h-[35px]">
             {
               (signinYn)?<HomeHeaderMenuButtonL text={languageStateSet.main_language_set[0].text[2]} disabled={profileYn} onClick={()=>profilePage()}/>:""
+            }
+            
+          </p>
+        </div>
+        {/* 내정보 */}
+        <div className="w-full flex justify-center text-white mt-1">
+          <p className="px-10 h-[35px]">
+            {
+              (signinYn)?<HomeHeaderMenuButtonL text={languageStateSet.main_language_set[0].text[4]} disabled={myInfoYn} onClick={()=>myInfo()}/>:""
             }
             
           </p>

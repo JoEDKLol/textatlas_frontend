@@ -5,7 +5,7 @@ const languageSet = {
   
 		{
 		"page":"header", 
-		"text":["HOME", "READING MATERIAL", "MY HISTORY", "COMMUNITY"]
+		"text":["HOME", "READING MATERIAL", "MY HISTORY", "COMMUNITY", "MY INFO"]
 		},
 		{
 			"page":"signin", 
@@ -54,11 +54,11 @@ const languageSet = {
 		},
 		{ //12
 			"page":"writing", 
-			"text":["Writing", "Title", "Save", "Add tag", "Success!", "Go to the community.", "Check!", "The number of characters is more than 4000."]
+			"text":["Writing", "Title", "Save", "Add tag", "Success!", "Go to the community.", "Check!", "The number of characters is more than 4000.", "Unspecified"]
 		},
 		{ //13
 			"page":"detail", 
-			"text":["Comment", "Reply"]
+			"text":["Comment", "Reply", "View Replies", "View More", "View More"]
 		}
 
 	], 
@@ -66,7 +66,7 @@ const languageSet = {
 		"text_by_language_kr" : [
 		{
 			"page":"header", 
-			"text":["홈", "읽을거리", "나의 히스토리", "커뮤니티"]
+			"text":["홈", "읽을거리", "나의 히스토리", "커뮤니티", "내정보"]
 		},
 		{
 			"page":"signin", 
@@ -114,18 +114,18 @@ const languageSet = {
 		},
 		{ //12
 			"page":"writing", 
-			"text":["글쓰기", "제목", "저장", "태그 추가", "성공!", "커뮤니티로 이동합니다.", "확인!", "4000자 이상입니다."]
+			"text":["글쓰기", "제목", "저장", "태그 추가", "성공!", "커뮤니티로 이동합니다.", "확인!", "4000자 이상입니다.", "미지정"]
 		},
 		{ //13
 			"page":"detail", 
-			"text":["댓글쓰기", "대댓글쓰기"]
+			"text":["댓글쓰기", "대댓글쓰기", "대댓글보기", "대댓글더보기", "댓글더보기"]
 		}
 	], 
 
   "text_by_language_mx" : [
 		{
 			"page":"header", 
-			"text":["HOGAR", "MATERIAL DE LECTURA", "MI HISTORIA", "COMUNIDAD"]
+			"text":["HOGAR", "MATERIAL DE LECTURA", "MI HISTORIA", "COMUNIDAD", "MI INFO"]
 		},
 		{
 			"page":"signin", 
@@ -173,11 +173,11 @@ const languageSet = {
 		},
 		{ //12
 			"page":"writing", 
-			"text":["Escribiendo", "Título", "Ahorrar", "Añadir tag", "Éxito!", "Ve a la comunidad.", "¡Comprobado!", "El número de caracteres es superior a 4000."]
+			"text":["Escribiendo", "Título", "Ahorrar", "Añadir tag", "Éxito!", "Ve a la comunidad.", "¡Comprobado!", "El número de caracteres es superior a 4000.", "Sin especificar"]
 		},
 		{ //13
 			"page":"detail", 
-			"text":["comentario", "Responder"]
+			"text":["comentario", "Responder", "Ver Respuestas", "Ver más", "Ver más"]
 		}
 		
 

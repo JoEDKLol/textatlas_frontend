@@ -21,6 +21,7 @@ interface communityItf {
   commentcnt:number
   userinfo:userInfoItf
   regdate:string
+  userInfoSeeYn:boolean
 }
 
 interface tagItf {
@@ -50,6 +51,7 @@ interface bookListState {
   searchTagListSet: (tag:any) => void;
   searchTagListAdd: (tag:any) => void;
   searchTagListDelete: (tag:any) => void;
+  setUserInfoSeeYn : (index:number, yn:boolean) => void;
 }
 
 // 초기 상태 정의
@@ -80,6 +82,12 @@ const communityState = create<bookListState>((set) => ({
     const newArray = [...state.searchTagList];
     newArray.splice(index, 1); // splice로 직접 삽입
     return {searchTagList: newArray};
+  }),
+  
+  setUserInfoSeeYn: (index:number, yn:boolean) => set((state)=>{
+    const newArray = [...state.communityList];
+    newArray[index] = { ...newArray[index],  userInfoSeeYn:yn};
+    return {communityList: newArray};
   }),
 
 }));

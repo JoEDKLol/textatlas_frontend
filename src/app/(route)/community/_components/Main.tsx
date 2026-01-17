@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import languageState from "@/app/store/language";
 import communityState from "@/app/store/communities";
 import { ButtonBaseAddTags } from "@/app/compontents/design/buttons/Buttons";
+import { CiImageOn } from "react-icons/ci";
 
 // interface userInfoItf {
 //   userseq:number
@@ -60,10 +61,8 @@ const Main = (props:any) => {
   
   const focusTagSearch = useRef<HTMLInputElement>(null);
   
-  //화면 실행 여부
-  // const [firstSearch, setFirstSearch] = useState<boolean>(false);
-
-  // setWordSearchSeq(retObj.sendObj.resObj[lastArr].seq);
+  //이름영역에 마우스가 있는 경우
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(()=>{
 
@@ -82,7 +81,6 @@ const Main = (props:any) => {
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('scroll', handleScroll);
-
     };
   },[])
 
@@ -263,8 +261,12 @@ const Main = (props:any) => {
   }
   
   function communityDetail(seq:number){
-    console.log(seq);
     router.push('/community/' + seq);
+  }
+
+  function setUserInfoSeeYn(index:number, yn:boolean){
+    communityStateSet.setUserInfoSeeYn(index, yn);
+    console.log(communityStateSet.communityList);
   }
 
   return(
@@ -276,7 +278,7 @@ const Main = (props:any) => {
           <div className="flex flex-col max-w-[700px] w-[95%] justify-center items-center  ">
 
             {/* 조회하기 영역 */}
-            <div className={communityStateSet.tagSearchYn.style + ` overflow-hidden fixed top-[40px] flex flex-col  justify-start  mt-5  w-full px-10 py-5 bg-white  z-1 transition-all ease-in-out duration-300 `}> 
+            <div className={communityStateSet.tagSearchYn.style + ` overflow-hidden fixed top-[35px] flex flex-col  justify-start  mt-5  w-full px-10 py-5 bg-white  z-10 transition-all ease-in-out duration-300 `}> 
               <div className="flex justify-center ">
                 <div className="flex justify-start items-center h-[30px]   ">
                   <div className="h-full flex justify-center  ">
@@ -346,9 +348,6 @@ const Main = (props:any) => {
                   {
                     communityStateSet.searchTagList.map((elem:any, index:number)=>{
                       return(
-
-                       
-
                         <div key={index + "taglist"} className="inline-block relative h-[20px] bg-[#5f89aa] text-white rounded-[8px] border text-[10px] pt-[2px]  ps-2 pe-5 me-1">
                           {elem}
                           <button className="absolute -top-[1px] right-[6px] font-bold text-[12px] cursor-pointer ms-3 
@@ -416,16 +415,54 @@ const Main = (props:any) => {
               communityStateSet.communityList?.map((elem, index)=>{
                 return(
                 <div key={index} className="w-full flex flex-col items-center ">
-                  <div  className="flex justify-center w-[95%] my-3 max-h-[350px]  ">
-                    <div className="flex flex-col w-full h-full rounded-2xl  px-4 py-2 hover:bg-gray-100 cursor-pointer  "
-                    onClick={()=>communityDetail(elem.community_seq)}
+
+
+                  {/* {
+                    (elem.userInfoSeeYn)?
+                    <div>
+                      <div className=" absolute w-[200px] h-[200px] top-[50px] z-10 bg-white border rounded-lg ">마우스들어왔을때 보이는지?</div>
+                    </div>
+                    
+                    :<></>
+                  } */}
+
+                  <div  className="flex justify-center w-[95%] my-3   ">
+                    <div className="flex flex-col w-full h-full rounded-2xl  px-4 py-2 hover:bg-gray-100   "
+                    // onClick={()=>communityDetail(elem.community_seq)}
                     >
                       {/* 상단 - 개인 프로필 이미지, 닉네임, 게시물 등록 시간 */} 
                       <div className="flex justify-between items-center h-[30px]  " >
-                        <div className="flex text-xs text-[#4A6D88]">
+                        <div className="flex text-xs text-[#4A6D88] cursor-pointer "
+                        onMouseEnter={() => setUserInfoSeeYn(index, true)}
+                        onMouseLeave={() => setUserInfoSeeYn(index, false)}
+                        >
+                          
+                          
+                          
+
                           <div className="">
-                            <div className="relative left-0 h-[20px] w-[20px]  ">
-                              <div className='absolute h-[20px] w-[20px] rounded-full border -z-0 '>
+                            
+                            <div className="relative left-0 h-[25px] w-[25px] z-0 ">
+                              {/* 개인 프로필 */}
+                              {
+                                (elem.userInfoSeeYn)?
+                                <div>
+                                  <div className=" absolute top-[20px] z-0 pt-2 ">
+                                    <div className="w-[300px] h-[200px] bg-white rounded-lg shadow-md flex flex-col p-3">
+                                      <div>사진</div>
+                                      <div>이름</div>
+                                      <div>본인소개</div>
+                                      <div>레벨</div>
+                                      <div>친구추가</div>
+                                      <div>쪽지보내기</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                :<></>
+                              }
+                              
+                              <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
 
                                 {
                                   (elem.userinfo.userthumbImg)?
@@ -435,48 +472,61 @@ const Main = (props:any) => {
                                   }
                                   alt=""
                                   layout="fill" 
-                                  style={{  borderRadius:"100px",}}
+                                  style={{  borderRadius:"5px",}}
                                   priority
                                   />
                                   :
-                                  <Image
-                                  src={
-                                    "/flags/kr.png"
-                                  }
-                                  alt=""
-                                  layout="fill" 
-                                  style={{  borderRadius:"100px",}}
-                                  priority
-                                  />
+                                  <div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
                                 }
 
                                 
                               </div>
                             </div>
                           </div>
-                          <div className="ps-[10px] flex items-center">{elem.userinfo.username}</div>
-                          <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elem.regdate)}</div> 
+                          <div className="ps-[10px] flex items-center pt-[2px] 
+                          
+                          ">
+                            {
+                              (elem.userinfo.username)?elem.userinfo.username:(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[8]:""
+                            }
+
+                          </div>
+                          <div className="ps-[10px] flex items-center pt-[2px] ">{getChangedMongoDBTimestpamp(elem.regdate)}</div> 
                         </div>
                         <div></div>
                       </div>
 
-                      {/* 제목 */}
-                      <div className=" max-h-[120px] line-clamp-2 text-base font-bold break-all mt-2 ">
-                        {elem.title}
-                      </div>
-                      <div dangerouslySetInnerHTML={{ __html: elem.contents }} className=" max-h-[180px] line-clamp-9 text-sm  mt-3 break-words ">
-                      </div>
-                      {/* 하단 좋아요 */}
-                      <div className="flex  text-sm justify-start items-center mt-3 ">
-                        <div><IoIosHeartEmpty/></div>
-                        <div className="ps-2">{elem.likecnt}</div>
-                        <div className="ps-4">
-                          <FaRegCommentDots />
+                      {/* 본문내용 */}
+                      <div className="w-full flex flex-col min-h-[200px] max-h-[350px] cursor-pointer"
+                      onClick={()=>communityDetail(elem.community_seq)}
+                      >
+                        <div className="  max-h-[120px] line-clamp-2 text-base font-bold break-all mt-2 cursor-pointer  "
+                        
+                        >
+                          {elem.title}
                         </div>
-                        <div className="ps-2">{elem.commentcnt}</div>
+                        <div dangerouslySetInnerHTML={{ __html: elem.contents }} className=" max-h-[180px] line-clamp-9 text-sm  mt-3 break-words cursor-pointer "
+                        // onClick={()=>communityDetail(elem.community_seq)}
+                        >
+                        </div>
                       </div>
+                      
+                      
                     </div>
                     
+                  </div>
+                  <div className="w-full px-7 flex items-start">
+                    {/* 하단 좋아요 */}
+                    <div className="flex  text-sm justify-start items-center cursor-pointer mb-1"
+                    onClick={()=>communityDetail(elem.community_seq)}
+                    >
+                      <div><IoIosHeartEmpty/></div>
+                      <div className="ps-2">{elem.likecnt}</div>
+                      <div className="ps-4">
+                        <FaRegCommentDots />
+                      </div>
+                      <div className="ps-2">{elem.commentcnt}</div>
+                    </div>
                   </div>
                   <div className="flex justify-start w-full px-7 pb-2">
                     <div>
