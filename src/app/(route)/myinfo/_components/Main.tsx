@@ -34,7 +34,7 @@ const Main = (props:any) => {
   
 
   useEffect(()=>{
-    console.log(userStateSet);
+    // console.log(userStateSet);
     // 
     if(userStateSet.username){
       setUsername(userStateSet.username);
@@ -301,9 +301,10 @@ const Main = (props:any) => {
                   ><LuSquarePen /></div>
                 </div>
                 <div className=" ">
-                  <textarea className={ userIntroStyle + ` h-[80px] w-full border px-2 py-2 rounded-lg border-[#4A6D88] text-[#4A6D88] focus:outline-none
+                  <textarea className={ userIntroStyle + ` h-[80px] w-full border px-2 py-2 rounded-lg border-[#4A6D88] text-[#4A6D88] 
+                  focus:outline-none resize-none p-3 overflow-y-auto
                   2xl:h-[100px]  xl:h-[100px]  lg:h-[100px]  md:h-[100px]  sm:h-[80px]
-                  resize-none p-3 overflow-y-auto 
+                   
                   `}
                   ref={focusUserIntro}
                   disabled={!userIntroYn}

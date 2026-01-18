@@ -2,7 +2,7 @@
 import Image from "next/legacy/image";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
-import { FaRegCommentDots } from "react-icons/fa";
+import { FaRegCommentDots, FaRegSave } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import errorScreenShow from "@/app/store/errorScreen";
 import loadingScreenShow from "@/app/store/loadingScreen";
@@ -15,6 +15,8 @@ import { ButtonBaseAddTags, ButtonCommentNext, ButtonCommentSave, ButtonSubComme
 import loadingScreenEmptyShow from "@/app/store/loadingScreen_empty";
 import alertPopupShow from "@/app/store/alertPopup";
 import { CiImageOn } from "react-icons/ci";
+import { LuSquarePen } from "react-icons/lu";
+import { transactionAuth } from "@/app/utils/axiosAuth";
 
 interface userInfoItf {
   userseq:number
@@ -66,6 +68,8 @@ interface commentItf {
   subCommentListSeeStyle:string
   subCommentLastSeq:number
   subCommentListFirstSearchYn:boolean
+  commentupdateYn:boolean
+  commentStyle:string
 }
 
 interface subCommentItf {
@@ -81,6 +85,8 @@ interface subCommentItf {
   regdate:string
   subcommentStyle:string
   subcomment:string
+  subcommentupdateYn:boolean
+  subcommentUpdateStyle:string
 }
 
 interface commentListItf extends Array<commentItf>{}
@@ -99,6 +105,8 @@ const Main = (props:any) => {
 
   const focusComment = useRef<HTMLTextAreaElement>(null);
   const focusCommentList = useRef<null[] | HTMLTextAreaElement[]>([]);
+  const focusCommentUpdate = useRef<null[] | HTMLTextAreaElement[]>([]);
+  const focusSubCommentUpdate = useRef<null[] | HTMLTextAreaElement[]>([]);
 
   //게시물정보 상세
   const [community, setCommunity] = useState<communityItf>();
@@ -210,7 +218,7 @@ const Main = (props:any) => {
       email:userStateSet.email
     }
 
-    const retObj = await transaction("post", "community/communitylikeupdate", obj, "", false, true, screenShowEmpty, errorShow);
+    const retObj = await transactionAuth("post", "community/communitylikeupdate", obj, "", false, true, screenShowEmpty, errorShow);
     if(retObj.sendObj.success === "y"){ 
       setCommunityLike({...communityLike, likeyn:retObj.sendObj.resObj.likeyn});
       setCommunity({...community as any,likecnt:retObj.sendObj.resObj.likecnt})
@@ -252,13 +260,22 @@ const Main = (props:any) => {
       comment:commentContent,
     }
     
-    const retObj = await transaction("post", "community/commentsave", obj, "", false, true, screenShow, errorShow);
+    const retObj = await transactionAuth("post", "community/commentsave", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){
 
       const obj = retObj.sendObj.resObj.newCommentObj;
+
       obj.subcommentStyle = " h-[0px] "
       obj.subCommentListSeeStyle = " h-[0px] ";
+      obj.commentStyle = " bg-[#dbe9f1] ";
       obj.subcommentList = [];
+      obj.userinfo = {};
+      obj.userinfo.userseq = userStateSet.userseq;
+      obj.userinfo.email = userStateSet.email;
+      obj.userinfo.username = userStateSet.username;
+      obj.userinfo.userimg = userStateSet.userimg;
+      obj.userinfo.userthumbImg = userStateSet.userthumbImg;
+
 
       commentList.unshift(obj);
       setCommunity({...community as any,commentcnt:retObj.sendObj.resObj.commentcnt});
@@ -294,6 +311,7 @@ const Main = (props:any) => {
           retObj.sendObj.resObj[i].subcommentStyle = " h-[0px] "
           retObj.sendObj.resObj[i].subCommentListSeeStyle = " h-[0px] ";
           retObj.sendObj.resObj[i].subcommentList = [];
+          retObj.sendObj.resObj[i].commentStyle = " bg-[#dbe9f1] ";
           
         }
         setCommentList(retObj.sendObj.resObj);
@@ -326,6 +344,8 @@ const Main = (props:any) => {
         for(let i=0; i<retObj.sendObj.resObj.length; i++){
           retObj.sendObj.resObj[i].subcommentStyle = " h-[0px] ";
           retObj.sendObj.resObj[i].subCommentListSeeStyle = " h-[0px] ";
+          retObj.sendObj.resObj[i].subcommentList = [];
+          retObj.sendObj.resObj[i].commentStyle = " bg-[#dbe9f1] ";
           
         }
 
@@ -378,15 +398,26 @@ const Main = (props:any) => {
 
     
     
-    const retObj = await transaction("post", "community/subcommentsave", obj, "", false, true, screenShow, errorShow);
+    const retObj = await transactionAuth("post", "community/subcommentsave", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){ 
       // setCommentList({...community as any,commentcnt:retObj.sendObj.resObj.commentcnt});
       const obj = retObj.sendObj.resObj.newCommentObj;
       obj.subcommentwriteyn = false;
       obj.subcommentStyle = " h-[0px] ";
+      obj.userinfo = {};
+      obj.userinfo.userseq = userStateSet.userseq;
+      obj.userinfo.email = userStateSet.email;
+      obj.userinfo.username = userStateSet.username;
+      obj.userinfo.userimg = userStateSet.userimg;
+      obj.userinfo.userthumbImg = userStateSet.userthumbImg;
+
       commentList[index].subcommentwriteyn = false;
       commentList[index].subcommentStyle = " h-[0px] ";
       commentList[index].subcomment = "";
+
+
+
+
       
       // const comment_seq = commentList[index].comment_seq;
       // let lastAddSeq=0; 
@@ -400,6 +431,8 @@ const Main = (props:any) => {
         commentList[index].subcommentList.unshift(obj);
       } 
 
+      commentList[index].subcommentList[0].subcommentupdateYn = false;
+      commentList[index].subcommentList[0].subcommentUpdateStyle = " bg-[#dddddd] ";
       
       commentList[index].subcommentcnt = retObj.sendObj.resObj.subcommentcnt;
       setCommentList([...commentList]);
@@ -420,6 +453,25 @@ const Main = (props:any) => {
   function subCommentOnChangeHandler(e:any, index:number){
     commentList[index].subcomment = e.target.value;
     setCommentList([...commentList]);
+    let totalByte = 0;
+    for(let i =0; i < commentList[index].subcomment.length; i++) {
+      const currentByte = commentList[index].subcomment.charCodeAt(i);
+      if(currentByte > 128){
+        totalByte += 2;
+      }else {
+        totalByte++;
+      }
+
+      if(totalByte > 400){
+        console.log("400");
+        commentList[index].subcomment = commentList[index].subcomment.substring(0, i);
+        // setCommentContent(commentContent.substring(0, i));
+        setCommentList([...commentList]);
+        break;
+      }
+    }
+    // commentList[index].subcomment = e.target.value;
+    // setCommentList([...commentList]);
   }
 
   async function subCommentListSee(index:number){
@@ -447,11 +499,21 @@ const Main = (props:any) => {
           if(retObj.sendObj.resObj.length > 0){
 
             const lastArr = retObj.sendObj.resObj.length-1;
+
+            for(let i=0; i<retObj.sendObj.resObj.length; i++){
+              retObj.sendObj.resObj[i].subcommentupdateYn = false;
+              retObj.sendObj.resObj[i].subcommentUpdateStyle = " bg-[#dddddd] ";
+            }
+
             commentList[index].subCommentLastSeq = retObj.sendObj.resObj[lastArr].subcomment_seq
             commentList[index].subcommentList = [...commentList[index].subcommentList as any, ...retObj.sendObj.resObj] as any;
             commentList[index].subCommentListFirstSearchYn = true;
             setCommentList([...commentList, ...retObj.sendObj.resObj]);   
-            commentList[index].subCommentListSeeStyle = " "         
+            commentList[index].subCommentListSeeStyle = " ";
+            // subcommentupdateYn = false;
+            // commentList[index].subcommentList[index2].subcommentUpdateStyle = " bg-[#dddddd] ";
+
+                 
           }else{
             commentList[index].subCommentListSeeStyle = " h-[0px] "
             commentList[index].subCommentListSeeYn = false;
@@ -481,12 +543,134 @@ const Main = (props:any) => {
       
       if(retObj.sendObj.resObj.length > 0){
 
+        for(let i=0; i<retObj.sendObj.resObj.length; i++){
+          retObj.sendObj.resObj[i].subcommentupdateYn = false;
+          retObj.sendObj.resObj[i].subcommentUpdateStyle = " bg-[#dddddd] ";
+        }
+        
         const lastArr = retObj.sendObj.resObj.length-1;
         commentList[index].subCommentLastSeq = retObj.sendObj.resObj[lastArr].subcomment_seq
         commentList[index].subcommentList = [...commentList[index].subcommentList as any, ...retObj.sendObj.resObj] as any;
         commentList[index].subCommentListFirstSearchYn = true;
-        setCommentList([...commentList, ...retObj.sendObj.resObj]);        
+        setCommentList([...commentList]);        
       }
+    }
+  }
+
+  function communityUpdatePage(){
+    router.push('/community/' + community_seq + '/update');
+  }
+
+  function commentUpdateOnChangeHandler(e:any, index:any){
+    commentList[index].comment = e.target.value;
+    setCommentList([...commentList]);
+  }
+
+  const [commentUpdateIndex, setCommentUpdateIndex] = useState<number>(-1);
+
+  useEffect(()=>{
+    if(commentUpdateIndex > -1){
+      focusCommentUpdate.current[commentUpdateIndex+10000]?.focus();
+      commentList[commentUpdateIndex].comment.length
+      setTimeout(() => {
+        const len = focusCommentUpdate.current[commentUpdateIndex+10000]?.value.length;
+        focusCommentUpdate.current[commentUpdateIndex+10000]?.setSelectionRange(len?len:0, len?len:0);
+      }, 0); // 0ms 타이머는 다음 이벤트 루프에서 실행되도록 합니다
+    }
+    
+    
+  },[commentUpdateIndex])
+
+  function fn_commentUpdateYn(index:any){
+
+
+    if(commentList[index].commentupdateYn){
+      commentList[index].commentupdateYn = false;
+      commentList[index].commentStyle = " bg-[#dbe9f1] ";
+      setCommentUpdateIndex(-1);
+    }else{
+      commentList[index].commentupdateYn = true;
+      commentList[index].commentStyle = " border border-gray-200 ";
+      setCommentUpdateIndex(index);
+    }
+
+    setCommentList([...commentList]);
+    
+  }
+
+  async function fn_commentUpdate(index:number){
+    
+    const obj = {
+      community_seq:community_seq,
+      comment_seq:commentList[index].comment_seq,
+      email:userStateSet.email,
+      comment:commentList[index].comment,
+    }
+
+    const retObj = await transactionAuth("post", "community/commentupdate", obj, "", false, true, screenShow, errorShow);
+    if(retObj.sendObj.success === "y"){ 
+      
+      commentList[index].commentupdateYn = false;
+      commentList[index].commentStyle = " bg-[#dbe9f1] ";
+      setCommentUpdateIndex(-1);
+      setCommentList([...commentList]);
+    }
+  }
+
+  const [subCommentUpdateIndex, setSubCommentUpdateIndex] = useState<number>(-1);
+
+  useEffect(()=>{
+    if(subCommentUpdateIndex > -1){
+      focusSubCommentUpdate.current[subCommentUpdateIndex+20000]?.focus();
+      setTimeout(() => {
+        const len = focusSubCommentUpdate.current[subCommentUpdateIndex+20000]?.value.length;
+        focusSubCommentUpdate.current[subCommentUpdateIndex+20000]?.setSelectionRange(len?len:0, len?len:0);
+      }, 0); // 0ms 타이머는 다음 이벤트 루프에서 실행되도록 합니다
+    }
+    
+    
+  },[subCommentUpdateIndex])
+
+  function fn_subCommentUpdateYn(index:number, index2:number){
+    // commentList[index].subcommentList[index].subcommentupdateYn
+    const subcommentupdateYn = commentList[index].subcommentList[index2].subcommentupdateYn;
+    if(subcommentupdateYn){
+      commentList[index].subcommentList[index2].subcommentupdateYn = false;
+      commentList[index].subcommentList[index2].subcommentUpdateStyle = " bg-[#dddddd] ";
+      setSubCommentUpdateIndex(-1);
+    }else{
+      commentList[index].subcommentList[index2].subcommentupdateYn = true;
+      commentList[index].subcommentList[index2].subcommentUpdateStyle = " bg-white border border-gray-200 ";
+      setSubCommentUpdateIndex(index2);
+    }
+
+     setCommentList([...commentList]);
+  }
+
+  function subcommentUpdateOnChangeHandler(e:any, index:number, index2:number){
+    commentList[index].subcommentList[index2].comment = e.target.value;
+    setCommentList([...commentList]);
+  }
+
+  async function fn_subcommentUpdate(index:number, index2:number){
+    
+    const obj = {
+      subcomment_seq:commentList[index].subcommentList[index2].subcomment_seq,
+      comment_seq:commentList[index].subcommentList[index2].comment_seq,
+      community_seq:commentList[index].subcommentList[index2].community_seq,
+      email:userStateSet.email,
+      comment:commentList[index].subcommentList[index2].comment,
+    }
+
+    // console.log(obj);
+
+    const retObj = await transactionAuth("post", "community/subcommentupdate", obj, "", false, true, screenShow, errorShow);
+    if(retObj.sendObj.success === "y"){ 
+      
+      commentList[index].subcommentList[index2].subcommentupdateYn = false;
+      commentList[index].subcommentList[index2].subcommentUpdateStyle = " bg-[#dddddd] ";
+      setSubCommentUpdateIndex(-1);
+      setCommentList([...commentList]);
     }
   }
 
@@ -512,7 +696,7 @@ const Main = (props:any) => {
                         {
                           (community?.userinfo.userthumbImg)?
                           <Image
-                          src={
+                          src={ 
                             community?.userinfo.userthumbImg
                           }
                           alt=""
@@ -540,10 +724,10 @@ const Main = (props:any) => {
               </div>
               
               {/* 계시글 타이틀 */}
-              <div className="w-full font-bold text-2xl">
+              <div className=" max-h-[120px] line-clamp-5 text-2xl font-bold break-all mt-2 cursor-pointer ">
                 {community?.title}
               </div>
-              <div className="w-full mt-5 ">
+              <div className="w-full mt-2 ">
                 {
                   (community?.contents)?
                   <QuillEditorScreen bgColor={"#ffffff"} 
@@ -620,18 +804,32 @@ const Main = (props:any) => {
                 </div>
                 {
                   (community)?
-                  <div className="flex justify-center items-center">
-                    <ButtonBaseAddTags text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[0]:""}
-                    onClick={()=>commentYn()}
-                    />
-                  </div>:<></>
+                  <div className="flex justify-center items-center ">
+                    <div> 
+                      <ButtonBaseAddTags text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[0]:""}
+                      onClick={()=>commentYn()}
+                      />
+                    </div>
+                    {/* 커뮤니티글 수정 */}
+                    {
+                      (userStateSet.userseq === community.userinfo.userseq)?
+                      <div className="ms-1"> 
+                        <ButtonBaseAddTags text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[5]:""}
+                        onClick={()=>communityUpdatePage()}
+                        />
+                      </div>
+                      :""
+                    }
+                    
+                  </div>
+                  :<></>
                 }
                 
               </div>
               {/* 댓글입력 로그인이 필요 함 */} 
               <div className={commentTextAreaStyle + " flex flex-col overflow-hidden  mt-3 transition-all ease-in-out duration-400    "}>
                 <div className="w-full ">
-                  <textarea className={ ` mt-1 text-xs w-full rounded-sm border resize-none p-3 overflow-y-auto outline-0 h-[75px]
+                  <textarea className={ ` mt-1 text-xs w-full rounded-sm border resize-none p-3 overflow-y-auto outline-0 h-[90px] max-h-[120px]
                 border-gray-400 font-normal `}
                   value={commentContent}
                   onChange={(e)=>commentOnChangeHandler(e)}
@@ -642,16 +840,17 @@ const Main = (props:any) => {
                   {
                     (userStateSet.id)?
                     <div>
-                      <ButtonCommentSave text={"저장"}
+                      <ButtonCommentSave text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[8]:""}
                       onClick={()=>commentSave()}
                       />
                     </div>
                     :""
                   }
-                  
-                  
                 </div>
               </div>
+              
+              <div className="border border-b my-3 border-gray-200"></div>
+
               {/* 댓글리스트 */}
               <div className="mt-3 flex flex-col ">
                 {
@@ -696,7 +895,39 @@ const Main = (props:any) => {
                               </div>
                               <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elem.regdate?elem.regdate:"")}</div> 
                             </div>
-                            <div></div>
+                            <div className="w-full flex flex-1 justify-end">
+                              <div >
+                              {/* 댓글수정 */}
+                              {
+                                (userStateSet.userseq === elem.userinfo.userseq)?
+                                <div className="flex justify-center pt-3 pe-1   " 
+                                >
+                                  {
+                                    (elem.commentupdateYn)?
+                                    <div className="text-[20px] cursor-pointer text-[#4A6D88]  me-1
+                                    transition-transform duration-300 ease-in-out hover:scale-110
+                                    "
+                                    onClick={()=>fn_commentUpdate(index)}
+                                    >
+                                      <FaRegSave />
+                                    </div>
+                                    :""
+                                  }
+
+                                  {/* <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
+                                  onClick={()=>fn_commentUpdateYn(index)}
+                                  /> */}
+                                  <div className="text-[20px] cursor-pointer text-[#4A6D88] 
+                                  transition-transform duration-300 ease-in-out hover:scale-110
+                                  "
+                                  onClick={()=>fn_commentUpdateYn(index)}
+                                  ><LuSquarePen /></div>
+                                  
+                                  
+                                </div>:""
+                              }
+                              </div>
+                            </div>
                           </div>
                         }
                         
@@ -707,7 +938,7 @@ const Main = (props:any) => {
                         {
                           (elem.subcommentyn)?
                           <div>
-                            <div className="w-full flex justify-end items-start">
+                            {/* <div className="w-full flex justify-end items-start">
                               <div className="w-[4%] h-[75px] flex flex-col">
                                 <div className="h-[100%] border-l border-b border-gray-400" ></div>
                               </div>
@@ -739,7 +970,6 @@ const Main = (props:any) => {
                                         </div>
                                       </div>
                                       <div className="ps-[10px] flex items-center">
-                                        {/* {elem.userinfo?.username} */}
                                         {
                                           (elem.userinfo.username)?elem.userinfo.username:(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[8]:""
                                         }
@@ -751,11 +981,23 @@ const Main = (props:any) => {
                                 </div>
                                 <div className="w-full my-1 min-h-[75px] max-h-[90px] p-3 text-xs overflow-y-auto rounded-lg bg-[#f1f1f1]">{elem.comment}</div>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                           
                           
-                          :<div className="my-1 min-h-[75px] max-h-[90px] p-3 text-xs overflow-y-auto rounded-lg bg-[#dbe9f1]">{elem.comment}</div>
+                          :
+                          <div className="">
+                            {/* {elem.comment} */}
+                            <textarea className={elem.commentStyle + ` my-1 h-[90px] max-h-[120px] p-3 text-xs overflow-y-auto rounded-lg  w-full
+                            focus:outline-none resize-none ` 
+                            }
+                            value={elem.comment}
+                            disabled={!elem.commentupdateYn}
+                            onChange={(e)=>commentUpdateOnChangeHandler(e, index)}
+                            ref={(element) => {focusCommentUpdate.current[index+10000] = element;}}
+                            // onFocus={this.value = value}
+                            />
+                          </div>
                         }
 
                         <div className="flex justify-between">
@@ -764,7 +1006,7 @@ const Main = (props:any) => {
                             <div className="ps-2  min-w-[25px] max-w-[50px]">{elem.subcommentcnt}</div>
                           </div>
                           <div className="mt-1 flex justify-center items-start ">
-                            <div className="flex justify-center items-center pe-2">
+                            <div className="flex justify-center items-center pe-1">
                               <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[2]:""}
                               onClick={()=>subCommentListSee(index)}
                               />
@@ -774,6 +1016,16 @@ const Main = (props:any) => {
                               onClick={()=>subCommentYn(index)}
                               />
                             </div>
+                            {/* 댓글수정
+                            {
+                              (userStateSet.userseq === elem.userinfo.userseq)?
+                              <div className="flex justify-center items-center ps-1">
+                                <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
+                                onClick={()=>fn_commentUpdateYn(index)}
+                                />
+                              </div>:""
+                            } */}
+                            
                             
                           </div>
                         </div>
@@ -782,7 +1034,7 @@ const Main = (props:any) => {
                             <div className="w-[4%] h-[75px] flex flex-col">
                               <div className="h-[50%] border-l border-b border-gray-400" ></div>
                             </div>
-                            <textarea className={ ` text-xs w-[95%] rounded-lg border resize-none p-3 overflow-y-auto outline-0 h-[75px]
+                            <textarea className={ ` text-xs w-[95%] rounded-lg border resize-none p-3 overflow-y-auto outline-0 h-[90px] max-h-[120px]
                           border-gray-400 font-normal `}
                             value={elem.subcomment}
                             ref={(element) => {focusCommentList.current[index] = element;}}
@@ -794,7 +1046,7 @@ const Main = (props:any) => {
                             {
                               (userStateSet.id)?
                               <div>
-                                <ButtonCommentSave text={"저장"}
+                                <ButtonCommentSave text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[8]:""}
                                 onClick={()=>subCommentSave(index)}
                                 />
                               </div>
@@ -811,9 +1063,9 @@ const Main = (props:any) => {
 
                           <div className="flex flex-col mt-1 rounded-lg py-3 ps-5 pe-3 items-end bg-[#f1f1f1] ">
                           {
-                            elem.subcommentList?.map((elemSub, index)=>{
+                            elem.subcommentList?.map((elemSub, index2)=>{
                               return(
-                                <div key={index+"subcommentList"} className="flex flex-col w-full ">
+                                <div key={index2+"subcommentList"} className="flex flex-col w-full ">
                                   <div className="flex justify-between items-center h-[30px]   " >
                                     <div className="flex text-xs text-[#4A6D88]">
                                       <div className="">
@@ -847,11 +1099,51 @@ const Main = (props:any) => {
                                       </div>
                                       <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elemSub.regdate?elemSub.regdate:"")}</div> 
                                     </div>
-                                    <div></div>
+                                    <div className="w-full flex flex-1 justify-end">
+                                    <div >
+                                    {/* 댓글수정 */}
+                                    {
+                                      (userStateSet.userseq === elemSub.userinfo.userseq)?
+                                      <div className="flex justify-center pt-3 pe-1   " 
+                                      >
+                                        {
+                                          (elemSub.subcommentupdateYn)?
+                                          <div className="text-[20px] cursor-pointer text-[#4A6D88]  me-1
+                                          transition-transform duration-300 ease-in-out hover:scale-110
+                                          "
+                                          onClick={()=>fn_subcommentUpdate(index, index2)}
+                                          >
+                                            <FaRegSave />
+                                          </div>
+                                          :""
+                                        }
+
+                                        {/* <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
+                                        onClick={()=>fn_commentUpdateYn(index)}
+                                        /> */}
+                                        <div className="text-[20px] cursor-pointer text-[#4A6D88] 
+                                        transition-transform duration-300 ease-in-out hover:scale-110
+                                        "
+                                        onClick={()=>fn_subCommentUpdateYn(index, index2)}
+                                        ><LuSquarePen /></div>
+                                        
+                                        
+                                      </div>:""
+                                    }
+                                    </div>
                                   </div>
-                                  <div  className="max-h-[90px] p-3 text-xs overflow-y-auto bg-[#d8d8d8]
-                                  w-full min-h-[75px] mb-3 mt-1 rounded-lg ">
-                                    {elemSub.comment}
+                                  </div>
+                                  <div  className="w-full mb-3 mt-1 ">
+                                    {/* {elemSub.comment} */}
+                                    <textarea className={elemSub.subcommentUpdateStyle + ` my-1 h-[90px] max-h-[120px] p-3 text-xs overflow-y-auto rounded-lg  w-full
+                                    focus:outline-none resize-none  ` 
+                                    }
+                                    value={elemSub.comment}
+                                    disabled={!elemSub.subcommentupdateYn}
+                                    onChange={(e)=>subcommentUpdateOnChangeHandler(e, index, index2)}
+                                    ref={(element) => {focusSubCommentUpdate.current[index2+20000] = element;}}
+                                    // onFocus={this.value = value}
+                                    />
                                   </div>
                                 </div>
                               )
@@ -870,6 +1162,7 @@ const Main = (props:any) => {
                   })
                 }
               </div>
+              {/* <div className="border border-b my-1 border-gray-200"></div> */}
               {/* 댓글더보기 조회 */}
               {
                 (community)?

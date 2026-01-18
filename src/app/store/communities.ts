@@ -52,6 +52,8 @@ interface bookListState {
   searchTagListAdd: (tag:any) => void;
   searchTagListDelete: (tag:any) => void;
   setUserInfoSeeYn : (index:number, yn:boolean) => void;
+  communityListChange: (index:number, community:any) => void;
+
 }
 
 // 초기 상태 정의
@@ -87,6 +89,12 @@ const communityState = create<bookListState>((set) => ({
   setUserInfoSeeYn: (index:number, yn:boolean) => set((state)=>{
     const newArray = [...state.communityList];
     newArray[index] = { ...newArray[index],  userInfoSeeYn:yn};
+    return {communityList: newArray};
+  }),
+
+  communityListChange: (index:number, community:any) => set((state)=>{
+    const newArray = [...state.communityList];
+    newArray[index] = { ...newArray[index],  title:community.title, contents:community.contents, hashtags:community.hashtags };
     return {communityList: newArray};
   }),
 

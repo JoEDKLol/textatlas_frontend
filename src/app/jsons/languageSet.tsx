@@ -58,7 +58,7 @@ const languageSet = {
 		},
 		{ //13
 			"page":"detail", 
-			"text":["Comment", "Reply", "View Replies", "View More", "View More"]
+			"text":["Comment", "Reply", "View Replies", "View More", "View More", "Update", "Update", "Update", "Save"]
 		}
 
 	], 
@@ -118,7 +118,7 @@ const languageSet = {
 		},
 		{ //13
 			"page":"detail", 
-			"text":["댓글쓰기", "대댓글쓰기", "대댓글보기", "대댓글더보기", "댓글더보기"]
+			"text":["댓글쓰기", "대댓글쓰기", "대댓글보기", "대댓글더보기", "댓글더보기", "수정", "댓글수정", "대댓글수정", "저장"]
 		}
 	], 
 
@@ -177,7 +177,7 @@ const languageSet = {
 		},
 		{ //13
 			"page":"detail", 
-			"text":["comentario", "Responder", "Ver Respuestas", "Ver más", "Ver más"]
+			"text":["comentario", "Responder", "Ver Respuestas", "Ver más", "Ver más", "Actualizar", "Actualizar", "Actualizar", "Ahorrar"]
 		}
 		
 
