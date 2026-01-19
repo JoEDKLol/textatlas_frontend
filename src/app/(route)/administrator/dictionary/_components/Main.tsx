@@ -66,10 +66,10 @@ const Main = (props:any) => {
 
     const retObj = await transactionAuth("get", "administrator/searchwordlist", obj, "", false, true, screenShow, errorShow);
 
-    console.log(retObj);
+    // console.log(retObj);
     
     if(retObj.sendObj.success === "y"){ 
-      console.log(retObj.sendObj);
+      // console.log(retObj.sendObj);
       setCurrentPage(2);
       const list = retObj.sendObj.resObj;
 

@@ -129,6 +129,8 @@ const Main = (props:any) => {
       userStateSet.userimgSet(userimg);
       userStateSet.userthumbImgSet(userthumbImg);
       userStateSet.introductionSet(introduction);
+      setUsernameYn(false);
+      setUserIntroYn(false);
     }
   }
 

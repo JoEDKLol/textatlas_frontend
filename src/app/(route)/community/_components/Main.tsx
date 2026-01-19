@@ -12,16 +12,18 @@ import { useInView } from 'react-intersection-observer';
 import { useRouter } from "next/navigation";
 import languageState from "@/app/store/language";
 import communityState from "@/app/store/communities";
-import { ButtonBaseAddTags } from "@/app/compontents/design/buttons/Buttons";
+import { ButtonBaseAddTags, ButtonCommentSave } from "@/app/compontents/design/buttons/Buttons";
 import { CiImageOn } from "react-icons/ci";
+import Message from "@/app/compontents/modals/Message";
+import alertPopupShow from "@/app/store/alertPopup";
 
-// interface userInfoItf {
-//   userseq:number
-//   email:string
-//   username:string
-//   userimg:string
-//   userthumbImg:string
-// }
+interface userInfoItf {
+  userseq:number
+  email:string
+  username:string
+  userimg:string
+  userthumbImg:string
+}
 
 // interface communityItf {
 //   _id:string
@@ -41,23 +43,22 @@ import { CiImageOn } from "react-icons/ci";
 let searchFrom = false;  
 
 const Main = (props:any) => {
-  
+  const userStateSet = props.userStateSet;
   const router = useRouter();
   const languageStateSet = languageState();
   const screenShow = loadingScreenShow();
   const errorShow = errorScreenShow();
+  const alertPopup = alertPopupShow();
 
   //커뮤니티글 리스트를 전역에 저장
   const communityStateSet = communityState();
   //스크롤위치를 전역에 저장
   const scrollPositonStateSet = communityScrollPositon();  
+  // const [searchAreaClass, setSerchAreaClass] = useState({style:" h-[60px] ", tagYn:false});
 
-  // const [keyword, setKeyword] = useState("");
-  // const [lastSeq, setLastSeq] = useState<number>(0);
-  // const [communityList, setCommunityList] = useState<communityListItf>([]);
-
-  const [searchAreaClass, setSerchAreaClass] = useState({style:" h-[60px] ", tagYn:false});
-
+  //메시지 보내기 창 팝업
+  const [showMessagePortal, setShowMessagePortal] = useState(false);
+  const [messageUserInfo, setMessageUserInfo] = useState<userInfoItf>();
   
   const focusTagSearch = useRef<HTMLInputElement>(null);
   
@@ -269,6 +270,23 @@ const Main = (props:any) => {
     // console.log(communityStateSet.communityList);
   }
 
+  function setShowMessage(yn:boolean){
+    setShowMessagePortal(yn);
+  }
+
+  function openMessagePopup(index:number, yn:boolean){
+
+    if(!userStateSet.id){
+      alertPopup.screenShowTrue();
+      alertPopup.messageSet("로그인!", "로그인이 필요 합니다.");
+      return;
+    }
+
+
+    setShowMessagePortal(yn);
+    setMessageUserInfo(communityStateSet.communityList[index].userinfo);
+  }
+  
   return(
     <>
     <div className="">
@@ -448,13 +466,50 @@ const Main = (props:any) => {
                                 (elem.userInfoSeeYn)?
                                 <div>
                                   <div className=" absolute top-[20px] z-0 pt-2 ">
-                                    <div className="w-[300px] h-[200px] bg-white rounded-lg shadow-md flex flex-col p-3">
-                                      <div>사진</div>
-                                      <div>이름</div>
-                                      <div>본인소개</div>
-                                      <div>레벨</div>
-                                      <div>친구추가</div>
-                                      <div>쪽지보내기</div>
+                                    <div className="w-[300px] max-h-[200px] bg-white rounded-lg shadow-md flex flex-col p-3">
+                                      <div className="flex justify-between h-[70px] items-start ">
+                                        {/* {elem.userinfo.userthumbImg} */}
+
+                                        <div className=" absolute h-[60px] w-[60px] rounded-sm  -z-0 border ">
+                                        
+                                        
+                                        
+                                        {
+                                          (elem.userinfo.userthumbImg)?
+                                          <Image
+                                          src={
+                                            elem.userinfo.userthumbImg
+                                          }
+                                          alt=""
+                                          layout="fill" 
+                                          style={{  borderRadius:"5px",}}
+                                          priority
+                                          />
+                                          :<div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
+                                        }
+                                        </div>
+                                        <div className=" ps-16 flex flex-1 ">
+                                          <div className="h-[60px] flex items-center text-md text-[#5f89aa] font-bold ps-1">
+                                            {
+                                              (elem.userinfo.username)?elem.userinfo.username:"미지정"
+                                            }
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="flex pt-1 text-xs  max-h-[80px] text-[#5f89aa] overflow-y-auto ">
+                                        {elem.userinfo.introduction}
+                                      </div>
+                                      {/* <div>레벨</div> */}
+                                      {/* <div>친구추가</div> */}
+                                      {
+                                        (elem.userinfo.userseq !== userStateSet.userseq)?
+                                        <div className="flex justify-end  w-full pt-2">
+                                          <div className="w-[100px]"
+                                          onClick={()=>openMessagePopup(index, true)}
+                                          ><ButtonCommentSave text={(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[9]:""}/></div>
+                                        </div>:""
+                                      }
+                                      
                                     </div>
                                   </div>
                                 </div>
@@ -558,6 +613,7 @@ const Main = (props:any) => {
         </div>
       </div>
     </div>
+    <Message show={showMessagePortal} setShowMessage={setShowMessage} messageUserInfo={messageUserInfo} userStateSet={userStateSet} />
     <div ref={ref}></div>
     </>
   );

@@ -7,7 +7,7 @@ const Layout = () => {
   const userStateSet = userState();
   return(
     <>
-      <Main/>
+      <Main userStateSet={userStateSet}/>
     </> 
   );
 };

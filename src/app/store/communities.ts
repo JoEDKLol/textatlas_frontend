@@ -3,11 +3,13 @@ import { create } from 'zustand';
 
 
 interface userInfoItf {
+  _id:string
   userseq:number
   email:string
   username:string
   userimg:string
   userthumbImg:string
+  introduction:string
 }
 
 interface communityItf {
@@ -22,6 +24,7 @@ interface communityItf {
   userinfo:userInfoItf
   regdate:string
   userInfoSeeYn:boolean
+
 }
 
 interface tagItf {
@@ -53,7 +56,8 @@ interface bookListState {
   searchTagListDelete: (tag:any) => void;
   setUserInfoSeeYn : (index:number, yn:boolean) => void;
   communityListChange: (index:number, community:any) => void;
-
+  communityLikeCntChange: (index:number, community:any) => void;
+  communityCommentCntChange: (index:number, community:any) => void;
 }
 
 // 초기 상태 정의
@@ -95,6 +99,24 @@ const communityState = create<bookListState>((set) => ({
   communityListChange: (index:number, community:any) => set((state)=>{
     const newArray = [...state.communityList];
     newArray[index] = { ...newArray[index],  title:community.title, contents:community.contents, hashtags:community.hashtags };
+    return {communityList: newArray};
+  }),
+
+  communityListAddPre: (community:any) => set((state)=>{
+    const newArray = [...state.communityList];
+    newArray.unshift(community);
+    return {communityList: newArray};
+  }),
+
+  communityLikeCntChange: (index:number, community:any) => set((state)=>{
+    const newArray = [...state.communityList];
+    newArray[index] = { ...newArray[index],  likecnt:community.likecnt, };
+    return {communityList: newArray};
+  }),
+
+  communityCommentCntChange: (index:number, community:any) => set((state)=>{
+    const newArray = [...state.communityList];
+    newArray[index] = { ...newArray[index],  commentcnt:community.commentcnt, };
     return {communityList: newArray};
   }),
 

@@ -17,6 +17,7 @@ import alertPopupShow from "@/app/store/alertPopup";
 import { CiImageOn } from "react-icons/ci";
 import { LuSquarePen } from "react-icons/lu";
 import { transactionAuth } from "@/app/utils/axiosAuth";
+import communityState from "@/app/store/communities";
 
 interface userInfoItf {
   userseq:number
@@ -102,6 +103,7 @@ const Main = (props:any) => {
   const path = usePathname();
   const userStateSet = props.userStateSet;
   const community_seq = path.split("/")[2];
+  const communityStateSet = communityState();
 
   const focusComment = useRef<HTMLTextAreaElement>(null);
   const focusCommentList = useRef<null[] | HTMLTextAreaElement[]>([]);
@@ -187,13 +189,13 @@ const Main = (props:any) => {
       alertPopup.screenShowTrue();
       alertPopup.messageSet("로그인!", "로그인이 필요 합니다.");
       return;
-    } 
+    }
     
     if(commentWriteYn){
       setCommentTextAreaStyle(" h-[0px] ")
     }else{
       focusComment.current?.focus();
-      setCommentTextAreaStyle(" h-[120px] ");
+      setCommentTextAreaStyle(" h-[130px] ");
     }
 
     setCommentWriteYn(!commentWriteYn);
@@ -221,7 +223,9 @@ const Main = (props:any) => {
     const retObj = await transactionAuth("post", "community/communitylikeupdate", obj, "", false, true, screenShowEmpty, errorShow);
     if(retObj.sendObj.success === "y"){ 
       setCommunityLike({...communityLike, likeyn:retObj.sendObj.resObj.likeyn});
-      setCommunity({...community as any,likecnt:retObj.sendObj.resObj.likecnt})
+      setCommunity({...community as any,likecnt:retObj.sendObj.resObj.likecnt});
+      const communityIndex = communityStateSet.communityList.findIndex((elem) => elem.community_seq === parseInt(community_seq));
+      communityStateSet.communityLikeCntChange(communityIndex, retObj.sendObj.resObj);
     }
   }
 
@@ -276,6 +280,11 @@ const Main = (props:any) => {
       obj.userinfo.userimg = userStateSet.userimg;
       obj.userinfo.userthumbImg = userStateSet.userthumbImg;
 
+      if(commentList.length === 0){ //최초 등록시 리스트가 0인경우 마지막 seq 를 세팅해준다. 세팅을 안하면 조회가 없는 경우에는 댓글더보기 조회시 조회가 됨.
+        console.log("여기 아님???" + obj.comment_seq);
+        setLastCommentSeq(obj.comment_seq);
+      }
+
 
       commentList.unshift(obj);
       setCommunity({...community as any,commentcnt:retObj.sendObj.resObj.commentcnt});
@@ -283,6 +292,11 @@ const Main = (props:any) => {
       setCommentWriteYn(false);
       setCommentContent("");
       setCommentList([...commentList]);
+
+      
+
+      const communityIndex = communityStateSet.communityList.findIndex((elem) => elem.community_seq === parseInt(community_seq));
+      communityStateSet.communityCommentCntChange(communityIndex, retObj.sendObj.resObj);
       // setLastCommentSeq(obj.seq);
     }
   }
@@ -351,9 +365,6 @@ const Main = (props:any) => {
 
         setCommentList([...commentList, ...retObj.sendObj.resObj]);
         setLastCommentSeq(retObj.sendObj.resObj[lastArr].comment_seq);
-        // if(retObj.sendObj.resObj[lastArr].subcommentyn){
-        //   setSubLastCommentSeq(retObj.sendObj.resObj[lastArr].subcomment_seq);
-        // }
       }
 
     }
@@ -410,6 +421,8 @@ const Main = (props:any) => {
       obj.userinfo.username = userStateSet.username;
       obj.userinfo.userimg = userStateSet.userimg;
       obj.userinfo.userthumbImg = userStateSet.userthumbImg;
+      obj.subcommentupdateYn = false;
+      obj.subcommentUpdateStyle = " bg-[#dddddd] ";
 
       commentList[index].subcommentwriteyn = false;
       commentList[index].subcommentStyle = " h-[0px] ";
@@ -431,8 +444,8 @@ const Main = (props:any) => {
         commentList[index].subcommentList.unshift(obj);
       } 
 
-      commentList[index].subcommentList[0].subcommentupdateYn = false;
-      commentList[index].subcommentList[0].subcommentUpdateStyle = " bg-[#dddddd] ";
+      // commentList[index].subcommentList[0].subcommentupdateYn = false;
+      // commentList[index].subcommentList[0].subcommentUpdateStyle = " bg-[#dddddd] ";
       
       commentList[index].subcommentcnt = retObj.sendObj.resObj.subcommentcnt;
       setCommentList([...commentList]);
@@ -1059,98 +1072,102 @@ const Main = (props:any) => {
                           </div>
                         </div>
                       
-                        <div className={elem.subCommentListSeeStyle + ` flex flex-col overflow-hidden  mt-2 transition-all ease-in-out duration-400`}>
+                        <div className={elem.subCommentListSeeStyle + ` flex flex-col overflow-hidden  mt-2 transition-all ease-in-out duration-400  `}>
 
-                          <div className="flex flex-col mt-1 rounded-lg py-3 ps-5 pe-3 items-end bg-[#f1f1f1] ">
+                          <div className="flex flex-col mt-1 items-end  ">
+                            
                           {
                             elem.subcommentList?.map((elemSub, index2)=>{
                               return(
-                                <div key={index2+"subcommentList"} className="flex flex-col w-full ">
-                                  <div className="flex justify-between items-center h-[30px]   " >
-                                    <div className="flex text-xs text-[#4A6D88]">
-                                      <div className="">
-                                        <div className="relative left-0 h-[25px] w-[25px]  ">
-                                          <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
+                                <div key={index2+"subcommentList"} className="flex justify-between w-full  ">
+                                  <div className="w-[30px] h-[80px] flex justify-center items-center border-l border-b border-[#4A6D88]"></div>
+                                  <div className="flex flex-col w-full ">
+                                    <div className="flex justify-between items-center h-[30px]   " >
+                                      <div className="flex text-xs text-[#4A6D88]">
+                                        <div className="">
+                                          <div className="relative left-0 h-[25px] w-[25px]  ">
+                                            <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
 
-                                            {
-                                              (elemSub.userinfo?.userthumbImg)?
-                                              <Image
-                                              src={
-                                                elemSub.userinfo.userthumbImg
+                                              {
+                                                (elemSub.userinfo?.userthumbImg)?
+                                                <Image
+                                                src={
+                                                  elemSub.userinfo.userthumbImg
+                                                }
+                                                alt=""
+                                                layout="fill" 
+                                                style={{  borderRadius:"10px",}}
+                                                priority
+                                                />
+                                                :
+                                                <div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
                                               }
-                                              alt=""
-                                              layout="fill" 
-                                              style={{  borderRadius:"10px",}}
-                                              priority
-                                              />
-                                              :
-                                              <div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
-                                            }
 
-                                            
+                                              
+                                            </div>
                                           </div>
                                         </div>
+                                        <div className="ps-[10px] flex items-center">
+                                          {/* {elemSub.userinfo?.username} */}
+                                          {
+                                            (elemSub.userinfo.username)?elemSub.userinfo.username:(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[8]:""
+                                          }
+                                        </div>
+                                        <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elemSub.regdate?elemSub.regdate:"")}</div> 
                                       </div>
-                                      <div className="ps-[10px] flex items-center">
-                                        {/* {elemSub.userinfo?.username} */}
-                                        {
-                                          (elemSub.userinfo.username)?elemSub.userinfo.username:(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[8]:""
-                                        }
-                                      </div>
-                                      <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elemSub.regdate?elemSub.regdate:"")}</div> 
-                                    </div>
-                                    <div className="w-full flex flex-1 justify-end">
-                                    <div >
-                                    {/* 댓글수정 */}
-                                    {
-                                      (userStateSet.userseq === elemSub.userinfo.userseq)?
-                                      <div className="flex justify-center pt-3 pe-1   " 
-                                      >
-                                        {
-                                          (elemSub.subcommentupdateYn)?
-                                          <div className="text-[20px] cursor-pointer text-[#4A6D88]  me-1
+                                      <div className="w-full flex flex-1 justify-end ">
+                                      <div >
+                                      {/* 대댓글수정 */}
+                                      {
+                                        (userStateSet.userseq === elemSub.userinfo.userseq)?
+                                        <div className="flex justify-center pt-3 pe-1   " 
+                                        >
+                                          {
+                                            (elemSub.subcommentupdateYn)?
+                                            <div className="text-[20px] cursor-pointer text-[#4A6D88]  me-1
+                                            transition-transform duration-300 ease-in-out hover:scale-110
+                                            "
+                                            onClick={()=>fn_subcommentUpdate(index, index2)}
+                                            >
+                                              <FaRegSave />
+                                            </div>
+                                            :""
+                                          }
+
+                                          {/* <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
+                                          onClick={()=>fn_commentUpdateYn(index)}
+                                          /> */}
+                                          <div className="text-[20px] cursor-pointer text-[#4A6D88] 
                                           transition-transform duration-300 ease-in-out hover:scale-110
                                           "
-                                          onClick={()=>fn_subcommentUpdate(index, index2)}
-                                          >
-                                            <FaRegSave />
-                                          </div>
-                                          :""
-                                        }
-
-                                        {/* <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
-                                        onClick={()=>fn_commentUpdateYn(index)}
-                                        /> */}
-                                        <div className="text-[20px] cursor-pointer text-[#4A6D88] 
-                                        transition-transform duration-300 ease-in-out hover:scale-110
-                                        "
-                                        onClick={()=>fn_subCommentUpdateYn(index, index2)}
-                                        ><LuSquarePen /></div>
-                                        
-                                        
-                                      </div>:""
-                                    }
+                                          onClick={()=>fn_subCommentUpdateYn(index, index2)}
+                                          ><LuSquarePen /></div>
+                                          
+                                          
+                                        </div>:""
+                                      }
+                                      </div>
                                     </div>
-                                  </div>
-                                  </div>
-                                  <div  className="w-full mb-3 mt-1 ">
-                                    {/* {elemSub.comment} */}
-                                    <textarea className={elemSub.subcommentUpdateStyle + ` my-1 h-[90px] max-h-[120px] p-3 text-xs overflow-y-auto rounded-lg  w-full
-                                    focus:outline-none resize-none  ` 
-                                    }
-                                    value={elemSub.comment}
-                                    disabled={!elemSub.subcommentupdateYn}
-                                    onChange={(e)=>subcommentUpdateOnChangeHandler(e, index, index2)}
-                                    ref={(element) => {focusSubCommentUpdate.current[index2+20000] = element;}}
-                                    // onFocus={this.value = value}
-                                    />
+                                    </div>
+                                    <div  className="w-full mb-1 mt-1 ">
+                                      {/* {elemSub.comment} */}
+                                      <textarea className={elemSub.subcommentUpdateStyle + ` my-1 h-[90px] max-h-[120px] p-3 text-xs overflow-y-auto rounded-lg  w-full
+                                      focus:outline-none resize-none  ` 
+                                      }
+                                      value={elemSub.comment}
+                                      disabled={!elemSub.subcommentupdateYn}
+                                      onChange={(e)=>subcommentUpdateOnChangeHandler(e, index, index2)}
+                                      ref={(element) => {focusSubCommentUpdate.current[index2+20000] = element;}}
+                                      // onFocus={this.value = value}
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               )
                             })
                           }
                           </div>
-                          <div className="w-full flex justify-end pt-2">
+                          <div className="w-full flex justify-end mb-2">
                             <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[3]:""}
                               onClick={()=>subCommentListSearchNext(index)}
                               />
@@ -1166,7 +1183,7 @@ const Main = (props:any) => {
               {/* 댓글더보기 조회 */}
               {
                 (community)?
-                <div className="my-5 flex justify-start items-center"
+                <div className="my-10 flex justify-start items-center"
                 >
                   <ButtonCommentNext text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[4]:""}
                   onClick={()=>commentNextSearch()}

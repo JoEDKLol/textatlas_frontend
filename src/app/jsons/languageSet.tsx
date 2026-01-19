@@ -54,11 +54,15 @@ const languageSet = {
 		},
 		{ //12
 			"page":"writing", 
-			"text":["Writing", "Title", "Save", "Add tag", "Success!", "Go to the community.", "Check!", "The number of characters is more than 4000.", "Unspecified"]
+			"text":["Writing", "Title", "Save", "Add tag", "Success!", "Go to the community.", "Check!", "The number of characters is more than 4000.", "Unspecified", "Message"]
 		},
 		{ //13
 			"page":"detail", 
 			"text":["Comment", "Reply", "View Replies", "View More", "View More", "Update", "Update", "Update", "Save"]
+		},
+		{ //14
+			"page":"message", 
+			"text":["Close", "Send"]
 		}
 
 	], 
@@ -114,11 +118,15 @@ const languageSet = {
 		},
 		{ //12
 			"page":"writing", 
-			"text":["글쓰기", "제목", "저장", "태그 추가", "성공!", "커뮤니티로 이동합니다.", "확인!", "4000자 이상입니다.", "미지정"]
+			"text":["글쓰기", "제목", "저장", "태그 추가", "성공!", "커뮤니티로 이동합니다.", "확인!", "4000자 이상입니다.", "미지정", "쪽지보내기"]
 		},
 		{ //13
 			"page":"detail", 
 			"text":["댓글쓰기", "대댓글쓰기", "대댓글보기", "대댓글더보기", "댓글더보기", "수정", "댓글수정", "대댓글수정", "저장"]
+		},
+		{ //14
+			"page":"message", 
+			"text":["닫기", "보내기"]
 		}
 	], 
 
@@ -173,11 +181,15 @@ const languageSet = {
 		},
 		{ //12
 			"page":"writing", 
-			"text":["Escribiendo", "Título", "Ahorrar", "Añadir tag", "Éxito!", "Ve a la comunidad.", "¡Comprobado!", "El número de caracteres es superior a 4000.", "Sin especificar"]
+			"text":["Escribiendo", "Título", "Ahorrar", "Añadir tag", "Éxito!", "Ve a la comunidad.", "¡Comprobado!", "El número de caracteres es superior a 4000.", "Sin especificar", "Mensaje"]
 		},
 		{ //13
 			"page":"detail", 
 			"text":["comentario", "Responder", "Ver Respuestas", "Ver más", "Ver más", "Actualizar", "Actualizar", "Actualizar", "Ahorrar"]
+		},
+		{ //14
+			"page":"message", 
+			"text":["Cerca", "Enviar"]
 		}
 		
 
