@@ -688,7 +688,7 @@ const Main = (props:any) => {
       </div>
       <div className="flex justify-center items-center 
       text-xs 2xl:text-base  xl:text-base  lg:text-sm  md:text-sm sm:text-xs
-      mt-5
+      mt-5 mb-7
       " >
         <div className="flex items-center">
           <ReadingPrev onClick={()=>prevPage()} 

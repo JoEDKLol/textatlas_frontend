@@ -62,7 +62,11 @@ const languageSet = {
 		},
 		{ //14
 			"page":"message", 
-			"text":["Close", "Send"]
+			"text":["Close", "Send", "Recipient", "Title", "Message"]
+		},
+		{ //15
+			"page":"myinfo", 
+			"text":["Name", "Introduction", "UPLOAD", "DELETE", "SAVE"]
 		}
 
 	], 
@@ -126,7 +130,11 @@ const languageSet = {
 		},
 		{ //14
 			"page":"message", 
-			"text":["닫기", "보내기"]
+			"text":["닫기", "보내기", "받는 사람", "제목", "내용"]
+		},
+		{ //15
+			"page":"myinfo", 
+			"text":["이름", "소개", "업로드", "삭제", "저장"]
 		}
 	], 
 
@@ -189,7 +197,11 @@ const languageSet = {
 		},
 		{ //14
 			"page":"message", 
-			"text":["Cerca", "Enviar"]
+			"text":["Cerca", "Enviar" ,"Destinataria", "Título", "Mensaje"]
+		},
+		{ //15
+			"page":"myinfo", 
+			"text":["Nombre", "Introducción", "CARGAR", "ELIMINAR", "GUARDAR"]
 		}
 		
 

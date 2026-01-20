@@ -250,7 +250,7 @@ const Main = (props:any) => {
                   bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold 
                     transition-all duration-200 ease-in-out cursor-pointer ps-2 py-[1px]" 
                     htmlFor="file_input">
-                      UPLOAD 
+                      {(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[15].text[2]:""} 
                     </label>
                     <input className=" text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer
                     hidden
@@ -265,7 +265,7 @@ const Main = (props:any) => {
                     transition-all duration-200 ease-in-out cursor-pointer ps-2 py-[1px]
                     "
                     onClick={()=>userDeleteImg()}
-                    >DELETE</button>
+                    >{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[15].text[3]:""}</button>
                   </div>
                 </div>
               </div>
@@ -278,7 +278,7 @@ const Main = (props:any) => {
               ">
                 <div className="mb-1 text-[#4A6D88] font-bold flex justify-between items-end">
                   
-                  <div>이름</div>
+                  <div>{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[15].text[0]:""}</div>
                   <div className="text-[15px] cursor-pointer 
                   transition-transform duration-300 ease-in-out hover:scale-110
                   "
@@ -295,7 +295,7 @@ const Main = (props:any) => {
                   ></input>
                 </div>
                 <div className="pt-2 mb-1 text-[#4A6D88] font-bold flex justify-between items-end">
-                  <div>소개</div>
+                  <div>{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[15].text[1]:""}</div>
                   <div className="text-[15px] cursor-pointer 
                   transition-transform duration-300 ease-in-out hover:scale-110
                   "
@@ -320,7 +320,7 @@ const Main = (props:any) => {
                   transition-all duration-200 ease-in-out cursor-pointer ps-2 py-[1px]
                   "
                   onClick={()=>save()}
-                  >SAVE</button>
+                  >{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[15].text[4]:""}</button>
                 </div>
               </div>
             </div>

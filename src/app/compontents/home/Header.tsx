@@ -14,6 +14,9 @@ import loadingScreenShow from "@/app/store/loadingScreen";
 import errorScreenShow from "@/app/store/errorScreen";
 import { signOut } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { SlEnvolopeLetter } from "react-icons/sl";
+import { MdMessage } from "react-icons/md";
+import MessageBox from "../modals/MessageBox";
 
 
 const Hearder = () => {
@@ -35,6 +38,9 @@ const Hearder = () => {
   const [communityYn, setCommunityYn] = useState(false);
   const [profileYn, setProfileYn] = useState(false);
   const [myInfoYn, setMyInfoYn] = useState(false);
+ 
+  //메시지박스 팝업
+  const [showMessageBoxPortal, setShowMessageBoxPortal] = useState(false);
   
 
   useEffect(()=>{
@@ -205,12 +211,17 @@ const Hearder = () => {
   function myInfo(){
     router.push('/myinfo');
   }
+
+  //Message modals
+  const messageBoxModal = (showYn:boolean) => {
+    setShowMessageBoxPortal(showYn);
+  };
+
   
   return(
     <header className={block + ` fixed top-0 left-0 w-full z-30 bg-[#4A6D88] items-start 
     2xl:h-[55px]   xl:h-[55px]   lg:h-[55px] 
     overflow-hidden
-
     `}>
       
       <div className="flex justify-between items-start w-full h-[55px] px-10 mt-[10px]  ">
@@ -312,6 +323,23 @@ const Hearder = () => {
             )}
           </div>
         </div>
+
+        {
+          (signinYn)?
+          <div className=" relative text-white w-[45px] h-[35px] flex justify-start items-center text-[30px] pe-2 cursor-pointer
+          transition-transform duration-300 ease-in-out
+          hover:scale-110 transform
+          "
+          onClick={()=>messageBoxModal(true)}
+          >
+            <p className="absolute left-[18px] w-[15px] top-0 h-[15px] font-bold pt-[2px] text-white rounded-full bg-red-500 text-[8px] text-center" >999</p>
+            <MdMessage />
+          </div>:<></>
+        }
+        
+
+
+
         <div className="hidden 2xl:flex   xl:flex   lg:flex   md:hidden sm:hidden  mt-[3px]  ">
           <p>{/* 로그인버튼 */}
             {
@@ -394,6 +422,8 @@ const Hearder = () => {
       <SignIn show={showSigninPortal} signInHandleModal={signInHandleModal} passwordChangeHandleModal={passwordChangeHandleModal} signUpHandleModal={signUpHandleModal} />
       <PasswordChange show={showPasswordChangePortal} signInHandleModal={signInHandleModal} passwordChangeHandleModal={passwordChangeHandleModal} signUpHandleModal={signUpHandleModal}/>
       <SignUp show={showSignUpPortal} signInHandleModal={signInHandleModal} passwordChangeHandleModal={passwordChangeHandleModal} signUpHandleModal={signUpHandleModal}/>
+      <MessageBox show={showMessageBoxPortal} messageBoxModal={messageBoxModal} userStateSet={userStateSet} />
+      
     </header>
   );
 };

@@ -179,14 +179,14 @@ const Message = (props:any) => {
             ">
               <div className=" flex flex-col w-full">
                 <div className="flex">
-                  <div>받는사람 : </div>
+                  <div>{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[14].text[2]:""} : </div>
                   <div className="ps-1 font-bold">
                     {messageUserInfo?.username} 
                   </div>
                 </div>
                 
 
-                <div className="mt-3">제목
+                <div className="mt-3">{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[14].text[3]:""}
                   <span className="ps-3 text-red-300">{validationTitleMsg}</span>
                 </div>
                 <div className="pt-1">
@@ -198,7 +198,7 @@ const Message = (props:any) => {
                     />
                 </div>
 
-                <div className="mt-3">내용
+                <div className="mt-3">{(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[14].text[4]:""}
                   <span className="ps-3 text-red-300">{validationMessageMsg}</span>
                 </div>
                 <div>
