@@ -109,8 +109,8 @@ const Main = (props:any) => {
     const retObj = await transactionAuth("post", "community/savecommunitywriting", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){ 
       //저장성공 팝업 이후 커뮤니티 화면으로 이동한다.
-      const communityIndex = communityStateSet.communityList.findIndex((elem) => elem.community_seq === parseInt(retObj.sendObj.resObj.community_seq));
-      communityStateSet.communityListChange(communityIndex, retObj.sendObj.resObj);
+      // const communityIndex = communityStateSet.communityList.findIndex((elem) => elem.community_seq === parseInt(retObj.sendObj.resObj.community_seq));
+      communityStateSet.communityListAddPre(retObj.sendObj.resObj);
       alertPopup.screenShowTrue();
       alertPopup.messageSet((languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[4]:"", (languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[5]:"");
       router.push('/community');

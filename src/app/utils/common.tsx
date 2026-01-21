@@ -96,6 +96,35 @@ const getDateContraction2 = (str:string) => {
 	return retStr;
 }
 
+//yyyymmddhhmmss
+const getDateContraction3 = (str:string) => {
+
+	if(!str){
+		return;
+	}
+
+	const regex = /^[0-9]*$/; // 숫자만 체크
+	let yyyymmdd = "";
+	for(let i=0; i<str.length; i++){
+		if(regex.test(str[i])){
+			yyyymmdd = yyyymmdd + str[i];
+		}
+	}
+
+	const year = yyyymmdd.substring(0, 4);
+	const month = yyyymmdd.substring(4, 6);
+	const day = yyyymmdd.substring(6, 8);
+
+	const hour = yyyymmdd.substring(8, 10);
+	const minute = yyyymmdd.substring(10, 12);
+	const second = yyyymmdd.substring(12, 14);
+
+	
+	const retStr =  year + "." +  month + "." + day + " " + hour + ":" + minute + ":" + second; 
+
+	return retStr;
+}
+
 
 const getChangedMongoDBTimestpamp = (str:string) => {
 
@@ -118,5 +147,5 @@ const getChangedMongoDBTimestpamp = (str:string) => {
 
 
 export  {getRandomNumber, addComma, storeAccessToken, getAccessToken, getDate, clearAccessToken
-	, getDateContraction, getDateContraction2,getChangedMongoDBTimestpamp,
+	, getDateContraction, getDateContraction2,getChangedMongoDBTimestpamp, getDateContraction3
 }

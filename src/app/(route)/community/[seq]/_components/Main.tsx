@@ -736,7 +736,7 @@ const Main = (props:any) => {
                 <div></div>
               </div>
               
-              {/* 계시글 타이틀 */}
+              {/* 게시글 타이틀 */}
               <div className=" max-h-[120px] line-clamp-5 text-2xl font-bold break-all mt-2 cursor-pointer ">
                 {community?.title}
               </div>

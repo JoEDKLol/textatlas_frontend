@@ -58,6 +58,7 @@ interface bookListState {
   communityListChange: (index:number, community:any) => void;
   communityLikeCntChange: (index:number, community:any) => void;
   communityCommentCntChange: (index:number, community:any) => void;
+  communityListAddPre: (community:any) => void;
 }
 
 // 초기 상태 정의
@@ -119,6 +120,8 @@ const communityState = create<bookListState>((set) => ({
     newArray[index] = { ...newArray[index],  commentcnt:community.commentcnt, };
     return {communityList: newArray};
   }),
+
+  
 
 }));
 
