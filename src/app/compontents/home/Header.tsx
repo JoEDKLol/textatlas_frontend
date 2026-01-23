@@ -17,6 +17,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { MdMessage } from "react-icons/md";
 import MessageBox from "../modals/MessageBox";
+import { transactionAuth } from "@/app/utils/axiosAuth";
+import unreadMessageCnt from "@/app/store/unreadMessageCnt";
 
 
 const Hearder = () => {
@@ -24,6 +26,7 @@ const Hearder = () => {
   const path = usePathname();
 
   const userStateSet = userState();
+  const unreadMessageCntSet = unreadMessageCnt();
   const screenShow = loadingScreenShow();
   const errorShow = errorScreenShow();
   const languageStateSet = languageState();
@@ -46,10 +49,16 @@ const Hearder = () => {
   useEffect(()=>{
     if(userStateSet.id){
       setSigninYn(true);
+      //메시지 건수 조회
+      getUnreadMessageCnt();
+
     }else{
       setSigninYn(false);
     }
   },[userStateSet]);
+
+
+  
 
   useEffect(() => {
 
@@ -171,17 +180,50 @@ const Hearder = () => {
     }
   }, []);
 
+  //바디 스크롤 없애기
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // 언마운트 시 스크롤 복구 (클린업 함수)
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen]);
 
   //login modals
   const signInHandleModal = (showYn:boolean) => {
+
+    if(showYn){
+      setIsModalOpen(true);
+    }else{
+      setIsModalOpen(false);
+    }
+
     setShowSigninPortal(showYn);
   };
 
   const passwordChangeHandleModal = (showYn:boolean) => {
+
+    if(showYn){
+      setIsModalOpen(true);
+    }else{
+      setIsModalOpen(false);
+    }
     setShowPasswordChangePortal(showYn);
   };
 
   const signUpHandleModal = (showYn:boolean) => {
+
+    if(showYn){
+      setIsModalOpen(true);
+    }else{
+      setIsModalOpen(false);
+    }
     setShowSignUpPortal(showYn);
   };
 
@@ -216,6 +258,20 @@ const Hearder = () => {
   const messageBoxModal = (showYn:boolean) => {
     setShowMessageBoxPortal(showYn);
   };
+
+  //메시지 건수 조회
+  async function getUnreadMessageCnt(){
+    const obj = {
+      userseq:userStateSet.userseq,
+    }
+
+    const retObj = await transactionAuth("get", "message/unreadmessagecnt", obj, "", false, true, screenShow, errorShow);
+    
+    if(retObj.sendObj.success === "y"){
+      // console.log(retObj.sendObj.resObj);
+      unreadMessageCntSet.unreadMessageCntSet(retObj.sendObj.resObj)
+    }
+  } 
 
   
   return(
@@ -332,7 +388,13 @@ const Hearder = () => {
           "
           onClick={()=>messageBoxModal(true)}
           >
-            <p className="absolute left-[18px] w-[15px] top-0 h-[15px] font-bold pt-[2px] text-white rounded-full bg-red-500 text-[8px] text-center" >999</p>
+            {
+              (unreadMessageCntSet.cnt > 0)?
+              <p className="absolute left-[18px] w-[15px] top-0 h-[15px] font-bold pt-[2px] text-white rounded-full bg-red-500 text-[8px] text-center" >
+                {unreadMessageCntSet.cnt}
+              </p>:<></>
+            }
+            
             <MdMessage />
           </div>:<></>
         }

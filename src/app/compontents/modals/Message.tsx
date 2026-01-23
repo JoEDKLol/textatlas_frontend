@@ -44,6 +44,27 @@ const Message = (props:any) => {
   const [validationTitleMsg, setValidationTitleMsg] = useState("");
   const [validationMessageMsg, setValidationMessageMsg] = useState("");
 
+  //바디 스크롤 없애기
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // 언마운트 시 스크롤 복구 (클린업 함수)
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  useEffect(()=>{
+    if(props.show){ //화면 시작
+      setIsOpen(true); 
+    }
+  },[props.show])
+
   useEffect(()=>{
     let totalByte = 0;
     for(let i =0; i < title.length; i++) {
@@ -85,6 +106,9 @@ const Message = (props:any) => {
   const messageUserInfo = props.messageUserInfo;
 
   function close(){
+    setTitle("");
+    setMessage("");
+    setIsOpen(false);
     props.setShowMessage(false);
   }
 
@@ -169,8 +193,8 @@ const Message = (props:any) => {
             <div onClick={()=>close()}>닫기</div>
           </div> */}
 
-          <div className=" w-[250px] h-[360px] shadow-sm border border-gray-100 shadow-[#4A6D88] rounded-md m-5
-          bg-white 
+          <div className=" w-[250px] h-[360px] shadow-md border border-gray-300 rounded-md m-5
+          bg-[#F5F7FA]
           "
           // onClick={()=>bookDetailPage(elem.book_seq)}
           >
@@ -190,7 +214,7 @@ const Message = (props:any) => {
                   <span className="ps-3 text-red-300">{validationTitleMsg}</span>
                 </div>
                 <div className="pt-1">
-                  <input className="h-full px-2 py-1 w-full text-xs rounded-sm placeholder:font-light border focus:outline-none "
+                  <input className="h-full px-2 py-1 w-full text-xs rounded-sm placeholder:font-light border focus:outline-none bg-white "
                      
                     ref={focusTitle}
                     value={title}
@@ -202,7 +226,7 @@ const Message = (props:any) => {
                   <span className="ps-3 text-red-300">{validationMessageMsg}</span>
                 </div>
                 <div>
-                  <textarea className={` my-1 h-[190px] text-xs overflow-y-auto rounded-sm  w-full border px-2 py-2
+                  <textarea className={` my-1 h-[190px] text-xs overflow-y-auto rounded-sm  w-full border px-2 py-2 bg-white
                   focus:outline-none resize-none  ` 
                   }
                   value={message}

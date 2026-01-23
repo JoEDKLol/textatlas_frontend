@@ -49,20 +49,41 @@ interface wordItf {
 }
 
 const BookInfo = (props:any) => {
-   const router = useRouter();
+  const router = useRouter();
   const languageStateSet = languageState();
   
-  //책정보
-  // const [bookInfoInPortal, setBookInfoInPortal] = useState<wordItf>(props.bookInfoInPortal);
+  //바디 스크롤 없애기
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // 언마운트 시 스크롤 복구 (클린업 함수)
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  useEffect(()=>{
+    if(props.show){ //화면 시작
+      setIsOpen(true); 
+    }
+  },[props.show])
+
 
   const bookInfo = props.bookInfoInPortal;
 
   function close(){
+    setIsOpen(false);
     props.setShowBookInfo(false);
   }
 
   //해당 책 읽기
   function readPage(seq:any){
+    setIsOpen(false);
     router.push('/readings/'+ seq);
   }
   

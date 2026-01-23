@@ -20,6 +20,7 @@ interface userState {
   socialLogin : boolean
   preferred_trans_lang : string
   introduction : string
+  uncheckmessagecnt:number
   userSet: (obj:any) => void;
   preferredTransLangSet: (obj:string) => void;
 }
@@ -42,6 +43,7 @@ const userState = create<userState>((set) => ({
   socialLogin : false, 
   preferred_trans_lang : "",
   introduction : "",
+  uncheckmessagecnt:0,
   userSet: (obj:any) => {set({ 
     id:obj.id, email:obj.email, userseq:obj.userseq, username:obj.username, 
     userimg:obj.userimg, userthumbImg : obj.userthumbImg, role:obj.role, 

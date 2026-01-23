@@ -39,6 +39,8 @@ const PasswordChange = (props:any) => {
   const focusPassword = useRef<HTMLInputElement>(null);
   const focusRepassword = useRef<HTMLInputElement>(null);
 
+  
+
   useEffect(() => {
     initF();
     if(props.show){  
@@ -170,13 +172,7 @@ const PasswordChange = (props:any) => {
       language : languageStateSet.current_language,
     }
 
-        console.log(obj);
-
-
-
     const resObj = await transaction("post", "user/sendemailforpassword", obj, "", false, true, screenShow, errorShow);
-    
-    console.log(resObj);
     
     if(resObj.sendObj.success==="y"){
       setIsRunning(true);
@@ -319,7 +315,7 @@ const PasswordChange = (props:any) => {
       selector="portal"
       show={props.show}>
       <div className="static">
-        <div className=' absolute top-0 right-0 left-0 z-40 w-[100%] h-[100%] border flex justify-center items-center pb-20 backdrop-blur-xs backdrop-brightness-80 '>
+        <div className=' fixed top-0 right-0 left-0 z-40 w-[100%] h-[100%] border flex justify-center items-center pb-20 backdrop-blur-xs backdrop-brightness-80 '>
           <div className={block +  "  w-[280px] h-[400px] border-2 rounded-md border-[#4A6D88] shadow-lg shadow-blue-900/50  bg-white"}>
             {(!signUpSeccess)?<>
               <div className="flex justify-end h-[24px] bg-[#4A6D88] ">

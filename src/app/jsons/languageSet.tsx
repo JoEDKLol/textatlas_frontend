@@ -67,6 +67,10 @@ const languageSet = {
 		{ //15
 			"page":"myinfo", 
 			"text":["Name", "Introduction", "UPLOAD", "DELETE", "SAVE"]
+		},
+		{ //16
+			"page":"messagebox", 
+			"text":["Next"]
 		}
 
 	], 
@@ -135,6 +139,10 @@ const languageSet = {
 		{ //15
 			"page":"myinfo", 
 			"text":["이름", "소개", "업로드", "삭제", "저장"]
+		},
+		{ //16
+			"page":"messagebox", 
+			"text":["다음"]
 		}
 	], 
 
@@ -202,6 +210,10 @@ const languageSet = {
 		{ //15
 			"page":"myinfo", 
 			"text":["Nombre", "Introducción", "CARGAR", "ELIMINAR", "GUARDAR"]
+		},
+		{ //16
+			"page":"messagebox", 
+			"text":["Próximo"]
 		}
 		
 

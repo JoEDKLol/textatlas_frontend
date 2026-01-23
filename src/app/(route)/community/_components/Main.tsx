@@ -435,15 +435,6 @@ const Main = (props:any) => {
                 <div key={index} className="w-full flex flex-col items-center ">
 
 
-                  {/* {
-                    (elem.userInfoSeeYn)?
-                    <div>
-                      <div className=" absolute w-[200px] h-[200px] top-[50px] z-10 bg-white border rounded-lg ">마우스들어왔을때 보이는지?</div>
-                    </div>
-                    
-                    :<></>
-                  } */}
-
                   <div  className="flex justify-center w-[95%] my-3   ">
                     <div className="flex flex-col w-full h-full rounded-2xl  px-4 py-2 hover:bg-gray-100   "
                     // onClick={()=>communityDetail(elem.community_seq)}
@@ -466,14 +457,11 @@ const Main = (props:any) => {
                                 (elem.userInfoSeeYn)?
                                 <div>
                                   <div className=" absolute top-[20px] z-0 pt-2 ">
-                                    <div className="w-[300px] max-h-[200px] bg-white rounded-lg shadow-md flex flex-col p-3">
+                                    <div className="w-[300px] max-h-[200px] bg-white rounded-lg shadow-sm flex flex-col p-3 border border-[#CFD8DC] ">
                                       <div className="flex justify-between h-[70px] items-start ">
                                         {/* {elem.userinfo.userthumbImg} */}
 
                                         <div className=" absolute h-[60px] w-[60px] rounded-sm  -z-0 border ">
-                                        
-                                        
-                                        
                                         {
                                           (elem.userinfo.userthumbImg)?
                                           <Image

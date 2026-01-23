@@ -336,7 +336,7 @@ const Main = (props:any) => {
         </div>
         
       </div>
-      <div className="h-full flex justify-center mt-5   ">
+      <div className="h-full flex justify-center mt-5 w-full  ">
         
         <div className=" flex flex-wrap justify-start 
         w-[240px] 2xl:w-[1310px]  xl:w-[1050px]  lg:w-[790px]  md:w-[530px]  sm:w-[530px]

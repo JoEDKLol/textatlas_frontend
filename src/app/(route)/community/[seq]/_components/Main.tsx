@@ -18,6 +18,7 @@ import { CiImageOn } from "react-icons/ci";
 import { LuSquarePen } from "react-icons/lu";
 import { transactionAuth } from "@/app/utils/axiosAuth";
 import communityState from "@/app/store/communities";
+import Message from "@/app/compontents/modals/Message";
 
 interface userInfoItf {
   userseq:number
@@ -25,6 +26,7 @@ interface userInfoItf {
   username:string
   userimg:string
   userthumbImg:string
+  introduction:string
 }
 
 interface communityItf {
@@ -38,6 +40,7 @@ interface communityItf {
   commentcnt:number
   userinfo:userInfoItf
   regdate:string
+  userInfoSeeYn:boolean
 }
 
 interface communityLikeItf{
@@ -71,6 +74,7 @@ interface commentItf {
   subCommentListFirstSearchYn:boolean
   commentupdateYn:boolean
   commentStyle:string
+  userInfoSeeYn:boolean
 }
 
 interface subCommentItf {
@@ -88,6 +92,7 @@ interface subCommentItf {
   subcomment:string
   subcommentupdateYn:boolean
   subcommentUpdateStyle:string
+  userInfoSeeYn:boolean
 }
 
 interface commentListItf extends Array<commentItf>{}
@@ -140,6 +145,78 @@ const Main = (props:any) => {
       likeyn:false
     }
   );
+
+  //메시지보내기창
+  const [showMessagePortal, setShowMessagePortal] = useState(false);
+  const [messageUserInfo, setMessageUserInfo] = useState<userInfoItf>();
+
+  function setShowMessage(yn:boolean){
+    setShowMessagePortal(yn);
+  }
+
+  function openMessagePopup( yn:boolean){
+
+    if(!userStateSet.id){
+      alertPopup.screenShowTrue();
+      alertPopup.messageSet("로그인!", "로그인이 필요 합니다.");
+      return;
+    }
+
+    setShowMessagePortal(yn);
+    setMessageUserInfo(community?.userinfo);
+  }
+
+  function setUserInfoSeeYn(yn:boolean){
+    if(community){
+      setCommunity({...community,userInfoSeeYn:yn });
+    }
+  }
+
+  
+
+  //댓글 사용자 클릭시
+
+  function commentOpenMessagePopup(index:number, yn:boolean){
+
+    if(!userStateSet.id){
+      alertPopup.screenShowTrue();
+      alertPopup.messageSet("로그인!", "로그인이 필요 합니다.");
+      return;
+    }
+
+    
+
+    setShowMessagePortal(yn);
+    setMessageUserInfo(commentList[index]?.userinfo);
+  }
+
+  function setCommentUserInfoSeeYn(index:number, yn:boolean){
+    
+    commentList[index].userInfoSeeYn = yn;
+    setCommentList([...commentList]);
+  }
+
+  //대댓글 사용자 클릭시
+  function subCommentOpenMessagePopup(commentIndex:number, subCommentIndex:number, yn:boolean){
+
+    if(!userStateSet.id){
+      alertPopup.screenShowTrue();
+      alertPopup.messageSet("로그인!", "로그인이 필요 합니다.");
+      return;
+    }
+
+    
+
+    setShowMessagePortal(yn);
+    setMessageUserInfo(commentList[commentIndex].subcommentList[subCommentIndex].userinfo);
+  }
+
+  function setSubCommentUserInfoSeeYn(commentIndex:number, subCommentIndex:number, yn:boolean){
+    // commentList[index].subcommentList
+    commentList[commentIndex].subcommentList[subCommentIndex].userInfoSeeYn = yn;
+    setCommentList([...commentList]);
+  }
+
   
   useEffect(() => {
     // console.log(userStateSet);
@@ -281,7 +358,7 @@ const Main = (props:any) => {
       obj.userinfo.userthumbImg = userStateSet.userthumbImg;
 
       if(commentList.length === 0){ //최초 등록시 리스트가 0인경우 마지막 seq 를 세팅해준다. 세팅을 안하면 조회가 없는 경우에는 댓글더보기 조회시 조회가 됨.
-        console.log("여기 아님???" + obj.comment_seq);
+        // console.log("여기 아님???" + obj.comment_seq);
         setLastCommentSeq(obj.comment_seq);
       }
 
@@ -701,9 +778,64 @@ const Main = (props:any) => {
               {/* {(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[0]:""}  */}
               {/* 상단 - 개인 프로필 이미지, 닉네임, 게시물 등록 시간 */} 
               <div className="flex justify-between items-center h-[30px]   " >
-                <div className="flex text-xs text-[#4A6D88]">
+                <div className="flex text-xs text-[#4A6D88] cursor-pointer"
+                onMouseEnter={() => setUserInfoSeeYn(true)}
+                onMouseLeave={() => setUserInfoSeeYn(false)}>
                   <div className="">
-                    <div className="relative left-0 h-[25px] w-[25px]  ">
+                    <div className="relative left-0 h-[25px] w-[25px] z-1 ">
+
+                      {/* 개인 프로필 */}
+                      {
+                        (community?.userInfoSeeYn)?
+                        <div>
+                          <div className=" absolute top-[20px] z-0 pt-2 ">
+                            <div className="w-[300px] max-h-[200px] bg-white rounded-lg shadow-sm flex flex-col p-3 border border-[#CFD8DC]">
+                              <div className="flex justify-between h-[70px] items-start ">
+
+                                <div className=" absolute h-[60px] w-[60px] rounded-sm  -z-0 border ">
+                                {
+                                  (community?.userinfo.userthumbImg)?
+                                  <Image
+                                  src={
+                                    community?.userinfo.userthumbImg
+                                  }
+                                  alt=""
+                                  layout="fill" 
+                                  style={{  borderRadius:"5px",}}
+                                  priority
+                                  />
+                                  :<div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
+                                }
+                                </div>
+                                <div className=" ps-16 flex flex-1 ">
+                                  <div className="h-[60px] flex items-center text-md text-[#5f89aa] font-bold ps-1">
+                                    {
+                                      (community?.userinfo.username)?community?.userinfo.username:"미지정"
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex pt-1 text-xs  max-h-[70px] text-[#5f89aa] overflow-y-auto ">
+                                {community?.userinfo.introduction}
+                              </div>
+                              {/* <div>레벨</div> */}
+                              {/* <div>친구추가</div> */}
+                              {
+                                (community?.userinfo.userseq !== userStateSet.userseq)?
+                                <div className="flex justify-end  w-full pt-2">
+                                  <div className="w-[100px]"
+                                  onClick={()=>openMessagePopup(true)}
+                                  ><ButtonCommentSave text={(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[9]:""}/></div>
+                                </div>:""
+                              }
+                              
+                            </div>
+                          </div>
+                        </div>
+                        
+                        :<></>
+                      }
+
                       <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
 
                         {
@@ -786,25 +918,6 @@ const Main = (props:any) => {
                       </div>
                     :<></>
                   }
-
-
-                    {/* {
-                      (userStateSet.id)?
-                      <div className="flex justify-center items-center cursor-pointer"
-                      onClick={()=>likeClickHandler()}
-                      >
-                        {
-                          (communityLike?.likeyn)?<div className=" text-red-500 "><IoMdHeart/></div>
-                          :<div className=" "><IoIosHeartEmpty/></div>
-                        }
-                        
-                        <div className="ps-2  min-w-[25px] max-w-[50px]">{community?.likecnt}</div>
-                      </div>:
-                      <div className="flex justify-center items-center ">
-                        <div className=" "><IoIosHeartEmpty/></div>
-                        <div className="ps-2  min-w-[25px] max-w-[50px]">{community?.likecnt}</div>
-                      </div>
-                    } */}
                   {
                     (community)?
                     <>
@@ -876,9 +989,66 @@ const Main = (props:any) => {
                           (elem.subcommentyn)?
                           <></>
                           :<div className="flex justify-between items-center h-[30px]   " >
-                            <div className="flex text-xs text-[#4A6D88]">
+                            <div className="flex text-xs text-[#4A6D88]"
+                            onMouseEnter={() => setCommentUserInfoSeeYn(index, true)}
+                            onMouseLeave={() => setCommentUserInfoSeeYn(index, false)}>
+                              
                               <div className="">
-                                <div className="relative left-0 h-[25px] w-[25px]  ">
+                                <div className="relative left-0 h-[25px] w-[25px] z-1 "
+                                >
+                                  {/* 개인 프로필 */}
+                                  {
+                                    (elem.userInfoSeeYn)?
+                                    <div>
+                                      <div className=" absolute top-[20px] z-0 pt-2 ">
+                                        <div className="w-[300px] max-h-[200px] bg-white rounded-lg shadow-sm flex flex-col p-3 border border-[#CFD8DC]">
+                                          <div className="flex justify-between h-[40px] items-start  ">
+
+                                            <div className=" absolute h-[40px] w-[40px] rounded-sm  -z-0 border ">
+                                            {
+                                              (elem.userinfo.userthumbImg)?
+                                              <Image
+                                              src={
+                                                elem.userinfo.userthumbImg
+                                              }
+                                              alt=""
+                                              layout="fill" 
+                                              style={{  borderRadius:"5px",}}
+                                              priority
+                                              />
+                                              :<div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
+                                            }
+                                            </div>
+                                            <div className=" ps-16 flex flex-1 ">
+                                              <div className="h-[40px] flex items-center text-md text-[#5f89aa] font-bold ps-1">
+                                                {
+                                                  (elem.userinfo.username)?elem.userinfo.username:"미지정"
+                                                }
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div className="flex pt-1 text-xs  max-h-[50px] text-[#5f89aa] overflow-y-auto ">
+                                            {elem.userinfo.introduction}
+                                          </div>
+                                          {/* <div>레벨</div> */}
+                                          {/* <div>친구추가</div> */}
+                                          {
+                                            (elem.userinfo.userseq !== userStateSet.userseq)?
+                                            <div className="flex justify-end  w-full pt-2">
+                                              <div className="w-[100px]"
+                                              onClick={()=>commentOpenMessagePopup(index, true)}
+                                              ><ButtonCommentSave text={(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[9]:""}/></div>
+                                            </div>:""
+                                          }
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    :<></>
+                                  }
+
+
                                   <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
 
                                     {
@@ -901,7 +1071,6 @@ const Main = (props:any) => {
                                 </div>
                               </div>
                               <div className="ps-[10px] flex items-center">
-                                {/* {elem.userinfo?.username} */}
                                 {
                                   (elem.userinfo.username)?elem.userinfo.username:(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[8]:""
                                 }
@@ -926,10 +1095,6 @@ const Main = (props:any) => {
                                     </div>
                                     :""
                                   }
-
-                                  {/* <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
-                                  onClick={()=>fn_commentUpdateYn(index)}
-                                  /> */}
                                   <div className="text-[20px] cursor-pointer text-[#4A6D88] 
                                   transition-transform duration-300 ease-in-out hover:scale-110
                                   "
@@ -951,50 +1116,7 @@ const Main = (props:any) => {
                         {
                           (elem.subcommentyn)?
                           <div>
-                            {/* <div className="w-full flex justify-end items-start">
-                              <div className="w-[4%] h-[75px] flex flex-col">
-                                <div className="h-[100%] border-l border-b border-gray-400" ></div>
-                              </div>
-                              <div className="flex flex-col w-[95%]">
-                                <div className="">
-                                  <div className="flex justify-between items-center h-[30px]   " >
-                                    <div className="flex text-xs text-[#4A6D88]">
-                                      <div className="">
-                                        <div className="relative left-0 h-[25px] w-[25px]  ">
-                                          <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
-
-                                            {
-                                              (elem.userinfo?.userthumbImg)?
-                                              <Image
-                                              src={
-                                                elem.userinfo.userthumbImg
-                                              }
-                                              alt=""
-                                              layout="fill" 
-                                              style={{  borderRadius:"10px",}}
-                                              priority
-                                              />
-                                              :
-                                              <div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
-                                            }
-
-                                            
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="ps-[10px] flex items-center">
-                                        {
-                                          (elem.userinfo.username)?elem.userinfo.username:(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[8]:""
-                                        }
-                                      </div>
-                                      <div className="ps-[10px] flex items-center">{getChangedMongoDBTimestpamp(elem.regdate?elem.regdate:"")}</div> 
-                                    </div>
-                                    <div></div>
-                                  </div>
-                                </div>
-                                <div className="w-full my-1 min-h-[75px] max-h-[90px] p-3 text-xs overflow-y-auto rounded-lg bg-[#f1f1f1]">{elem.comment}</div>
-                              </div>
-                            </div> */}
+                            
                           </div>
                           
                           
@@ -1029,20 +1151,11 @@ const Main = (props:any) => {
                               onClick={()=>subCommentYn(index)}
                               />
                             </div>
-                            {/* 댓글수정
-                            {
-                              (userStateSet.userseq === elem.userinfo.userseq)?
-                              <div className="flex justify-center items-center ps-1">
-                                <ButtonSubComment text={(languageStateSet.main_language_set[13])?languageStateSet.main_language_set[13].text[6]:""}
-                                onClick={()=>fn_commentUpdateYn(index)}
-                                />
-                              </div>:""
-                            } */}
                             
                             
                           </div>
                         </div>
-                        <div className={elem.subcommentStyle + " flex flex-col overflow-hidden  mt-2 transition-all ease-in-out duration-400  "}>
+                        <div className={elem.subcommentStyle + " flex flex-col overflow-hidden  mt-3 transition-all ease-in-out duration-400  "}>
                           <div className="w-full flex justify-end items-start">
                             <div className="w-[4%] h-[75px] flex flex-col">
                               <div className="h-[50%] border-l border-b border-gray-400" ></div>
@@ -1083,9 +1196,66 @@ const Main = (props:any) => {
                                   <div className="w-[30px] h-[80px] flex justify-center items-center border-l border-b border-[#4A6D88]"></div>
                                   <div className="flex flex-col w-full ">
                                     <div className="flex justify-between items-center h-[30px]   " >
-                                      <div className="flex text-xs text-[#4A6D88]">
+                                      <div className="flex text-xs text-[#4A6D88]"
+                                      onMouseEnter={() => setSubCommentUserInfoSeeYn(index, index2, true)}
+                                      onMouseLeave={() => setSubCommentUserInfoSeeYn(index, index2, false)}
+                                      >
+                                      
                                         <div className="">
                                           <div className="relative left-0 h-[25px] w-[25px]  ">
+
+                                            {/* 개인 프로필 */}
+                                            {
+                                              (elemSub.userInfoSeeYn)?
+                                              <div>
+                                                <div className=" absolute top-[20px] z-0 pt-2 ">
+                                                  <div className="w-[300px] max-h-[200px] bg-white rounded-lg shadow-sm flex flex-col p-3 border border-[#CFD8DC]">
+                                                    <div className="flex justify-between h-[40px] items-start  ">
+
+                                                      <div className=" absolute h-[40px] w-[40px] rounded-sm  -z-0 border ">
+                                                      {
+                                                        (elemSub.userinfo.userthumbImg)?
+                                                        <Image
+                                                        src={
+                                                          elemSub.userinfo.userthumbImg
+                                                        }
+                                                        alt=""
+                                                        layout="fill" 
+                                                        style={{  borderRadius:"5px",}}
+                                                        priority
+                                                        />
+                                                        :<div className="flex justify-center items-center w-full h-full text-[25px] text-gray-500  "><CiImageOn /></div>
+                                                      }
+                                                      </div>
+                                                      <div className=" ps-16 flex flex-1 ">
+                                                        <div className="h-[40px] flex items-center text-md text-[#5f89aa] font-bold ps-1">
+                                                          {
+                                                            (elemSub.userinfo.username)?elemSub.userinfo.username:"미지정"
+                                                          }
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div className="flex pt-1 text-xs  max-h-[40px] text-[#5f89aa] overflow-y-auto ">
+                                                      {elemSub.userinfo.introduction}
+                                                    </div>
+                                                    {/* <div>레벨</div> */}
+                                                    {/* <div>친구추가</div> */}
+                                                    {
+                                                      (elemSub.userinfo.userseq !== userStateSet.userseq)?
+                                                      <div className="flex justify-end  w-full pt-2">
+                                                        <div className="w-[100px]"
+                                                        onClick={()=>subCommentOpenMessagePopup(index, index2, true)}
+                                                        ><ButtonCommentSave text={(languageStateSet.main_language_set[12])?languageStateSet.main_language_set[12].text[9]:""}/></div>
+                                                      </div>:""
+                                                    }
+                                                    
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                              :<></>
+                                            }
+
                                             <div className='absolute h-[25px] w-[25px] rounded-sm border -z-0 '>
 
                                               {
@@ -1196,6 +1366,7 @@ const Main = (props:any) => {
         </div>
       </div>
     </div>
+    <Message show={showMessagePortal} setShowMessage={setShowMessage} messageUserInfo={messageUserInfo} userStateSet={userStateSet} />
     </>
   );
 };
