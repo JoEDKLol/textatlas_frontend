@@ -473,20 +473,20 @@ const MessageBox = (props:any) => {
                 <div className={ selectedAll.selectStyle + `  border-b-[#4A6D88]  px-2 cursor-pointer
                    `}
                   onClick={()=>clickTabs(0)}
-                  >전체</div>
+                  >{(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[1]:""}</div>
                 <div className={ selectedRec.selectStyle + `  border-b-[#4A6D88]  px-2 cursor-pointer
                    `}
                   onClick={()=>clickTabs(1)}
-                  >받은메시지</div>
+                  >{(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[2]:""}</div>
                 <div className={ selectedSend.selectStyle + `  border-b-[#4A6D88]  px-2 cursor-pointer
                    `}
                   onClick={()=>clickTabs(2)}
-                  >보낸메시지</div>
+                  >{(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[3]:""}</div>
                   <div className="flex-1 ">
                     <div className="mt-1 w-full flex justify-end  ">
                       <div className=""> 
                         <ButtonMessage text={
-                          (languageStateSet.main_language_set[10])?languageStateSet.main_language_set[14].text[0]:""
+                          (languageStateSet.main_language_set[14])?languageStateSet.main_language_set[14].text[0]:""
                         }
                         onClick={()=>close()}
                         /> 
@@ -514,35 +514,44 @@ const MessageBox = (props:any) => {
                                 {/* 보낸 메시지 */}
                                 {(userStateSet.userseq === elem.send_user_seq)?
                                 <div className="w-full flex justify-between text-[10px] font-normal">
-                                  <div className="w-full line-clamp-1 break-all  ">{`받은사람 : ` + elem.receive_userinfo.username}  
+                                  {/* 받은사람 */}
+                                  <div className="w-full line-clamp-1 break-all  ">{(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[5]:""
+                                  + elem.receive_userinfo.username}  
                                   </div>
                                   <div className=" text-[10px] font-normal w-[230px] flex justify-end">
                                   {/* 보낸 메시지 확인이 안된경우 미확인 표시 */}
                                   {
                                     (elem.msg_checkyn)?
                                     <div>
-                                      {` 확인일자 : ` + getDateContraction3(elem.receive_time)  }
+                                      {/* 확인일자 */}
+                                      {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[7]+ " : " +getDateContraction3(elem.receive_time)
+                                      :""
+                                        }
                                     </div>
                                     :<div className="font-bold ">
-                                    미확인
+                                      {/* 미확인 */}
+                                    {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[6]:""}
                                     </div>
                                   } 
                                   </div>
                                 </div>
                                 :
                                 <div className="w-full flex justify-between text-[10px] font-normal">
-                                  <div className="w-full line-clamp-1 break-all  ">{`보낸사람 : ` + elem.send_userinfo.username}  
+                                  {/* 보낸사람 */}
+                                  <div className="w-full line-clamp-1 break-all  ">{(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[4]:""
+                                   + elem.send_userinfo.username}  
                                     {/* <p className="w-full line-clamp-1 break-all">{  elem.send_userinfo.username  }</p> */}
                                   </div>
                                   <div className=" text-[10px] font-normal w-[240px] flex justify-end ">
                                   {
                                     (elem.msg_checkyn)?
-                                    <div>
-                                      {` 확인일자 : ` + getDateContraction3(elem.receive_time)  }
+                                    <div className="">
+                                      {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[7] + " : " + getDateContraction3(elem.receive_time)
+                                      :""   }
                                     </div>
-                                    :<div className="font-bold relative ">
-                                      <span className="absolute inline-flex h-[12px] w-[17px] animate-ping rounded-full bg-blue-400 opacity-75 left-[6px]"></span>
-                                      미확인
+                                    :<div className="font-bold relative  ">
+                                      <span className="absolute inline-flex h-[12px] w-[12px] animate-ping rounded-full bg-blue-400 opacity-75 left-[50%]"></span>
+                                      {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[6]:""}
                                     </div>
                                   } 
                                   </div>
@@ -562,14 +571,16 @@ const MessageBox = (props:any) => {
                                   <div className="w-full flex justify-center items-center"
                                   // onClick={()=>onclickCheckAllContent(index)}
                                   >
-                                    <div className="w-[60px] pt-1 px-1">
-                                      <ButtonMessageSee text={"내용보기"}
+                                    <div className="pt-1 px-1 ">
+                                      {/* 내용보기 */}
+                                      <ButtonMessageSee text={(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[8]:""}
                                       onClick={()=>onclickCheckAllContent(index)}
                                       />
                                     </div>
 
-                                    <div className="w-[60px] pt-1 px-1">
-                                      <ButtonMessageSee text={"삭제"}
+                                    <div className="pt-1 px-1">
+                                      {/* 삭제 */}
+                                      <ButtonMessageSee text={(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[9]:""}
                                       onClick={()=>onclickDeleteMessage(index)}
                                       />
                                     </div>
@@ -624,11 +635,13 @@ const MessageBox = (props:any) => {
                                   {
                                     (elem.msg_checkyn)?
                                     <div>
-                                      {` 확인일자 : ` + getDateContraction3(elem.receive_time)  }
+                                      {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[7] + " : " + getDateContraction3(elem.receive_time)
+                                      :""
+                                         }
                                     </div>
                                     :<div className="font-bold relative ">
-                                      <span className="absolute inline-flex h-[12px] w-[17px] animate-ping rounded-full bg-blue-400 opacity-75 left-[6px]"></span>
-                                      미확인
+                                      <span className="absolute inline-flex h-[12px] w-[12px] animate-ping rounded-full bg-blue-400 opacity-75 left-[50%]"></span>
+                                      {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[6]:""}
                                     </div>
                                   } 
                                   </div>
@@ -648,14 +661,14 @@ const MessageBox = (props:any) => {
                                 <div className="w-1/3 flex">
                                   <div className="w-full flex justify-center items-center"
                                   >
-                                    <div className="w-[60px] pt-1 px-1">
-                                      <ButtonMessageSee text={"내용보기"}
+                                    <div className="pt-1 px-1">
+                                      <ButtonMessageSee text={(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[8]:""}
                                       onClick={()=>onclickCheckRecContent(index)}
                                       />
                                     </div>
 
-                                    <div className="w-[60px] pt-1 px-1">
-                                      <ButtonMessageSee text={"삭제"}
+                                    <div className=" pt-1 px-1">
+                                      <ButtonMessageSee text={(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[9]:""}
                                       onClick={()=>onclickDeleteRedMessage(index)}
                                       />
                                     </div>
@@ -698,17 +711,20 @@ const MessageBox = (props:any) => {
                                 {/* 보낸 메시지 */}
                                 
                                 <div className="w-full flex justify-between text-[10px] font-normal">
-                                  <div className="w-full line-clamp-1 break-all  ">{`받은사람 : ` + elem.receive_userinfo.username}  
+                                  <div className="w-full line-clamp-1 break-all  ">{(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[5]:""
+                                  + elem.receive_userinfo.username}  
                                   </div>
                                   <div className=" text-[10px] font-normal w-[230px] flex justify-end">
                                   {/* 보낸 메시지 확인이 안된경우 미확인 표시 */}
                                   {
                                     (elem.msg_checkyn)?
                                     <div>
-                                      {` 확인일자 : ` + getDateContraction3(elem.receive_time)  }
+                                      {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[7] + " : " + getDateContraction3(elem.receive_time)
+                                      :""
+                                       + getDateContraction3(elem.receive_time)  }
                                     </div>
                                     :<div className="font-bold ">
-                                    미확인
+                                    {(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[6]:""}
                                     </div>
                                   } 
                                   </div>
@@ -728,14 +744,14 @@ const MessageBox = (props:any) => {
                                 <div className="w-1/3 flex">
                                   <div className="w-full flex justify-center items-center"
                                   >
-                                    <div className="w-[60px] pt-1 px-1">
-                                      <ButtonMessageSee text={"내용보기"}
+                                    <div className="pt-1 px-1">
+                                      <ButtonMessageSee text={(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[8]:""}
                                       onClick={()=>onclickCheckSendContent(index)}
                                       />
                                     </div>
 
-                                    <div className="w-[60px] pt-1 px-1">
-                                      <ButtonMessageSee text={"삭제"}
+                                    <div className=" pt-1 px-1">
+                                      <ButtonMessageSee text={(languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[9]:""}
                                       onClick={()=>onclickDeleteSendMessage(index)}
                                       />
                                     </div>
@@ -771,7 +787,7 @@ const MessageBox = (props:any) => {
             <div className="h-[30px] w-full flex justify-end pe-1  ">
               <div>
                 <ButtonMessageNext text={
-                  (languageStateSet.main_language_set[10])?languageStateSet.main_language_set[16].text[0]:""
+                  (languageStateSet.main_language_set[16])?languageStateSet.main_language_set[16].text[0]:""
                 }
                 onClick={
                   (selectedTab===0)?()=>nextMessageSearch()

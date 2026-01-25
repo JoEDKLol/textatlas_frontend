@@ -66,11 +66,25 @@ const languageSet = {
 		},
 		{ //15
 			"page":"myinfo", 
-			"text":["Name", "Introduction", "UPLOAD", "DELETE", "SAVE"]
+			"text":["Name", "Introduction", "UPLOAD", "DELETE", "SAVE", "Community", "Comment", "Reply", "Like", "Go"]
 		},
 		{ //16
 			"page":"messagebox", 
-			"text":["Next"]
+			"text":["Next", "Total", "Received", "Send", "Sender", "Recipient", "Unspecified", "Read", "View Content", "Delete"]
+		},
+		{ //17
+			"page":"landingPage", 
+			"text":["The Wisdom of Classics, Reimagined in Your Language.", 
+							"Explore the depth of English classical literature and embark on a new learning experience to enhance your language skills.", 
+							"We support your journey into knowledge in a calm and focused environment.", 
+							"Key Features",
+							"Library:", 
+							"Easily search and explore countless works of English classical literature.", 
+							"Intelligent Translation Support:", 
+							"Instantly translate unfamiliar words or sentences into Korean or Spanish via the DeepL API, enhancing an immersive reading experience.", 
+							"Optimized Reading Environment:", 
+							"Enjoy classics comfortably with a clean, page-by-page layout.", 
+							"Start Now"]
 		}
 
 	], 
@@ -138,11 +152,25 @@ const languageSet = {
 		},
 		{ //15
 			"page":"myinfo", 
-			"text":["이름", "소개", "업로드", "삭제", "저장"]
+			"text":["이름", "소개", "업로드", "삭제", "저장", "커뮤니티", "댓글", "대댓글", "좋아요", "보러가기"]
 		},
 		{ //16
 			"page":"messagebox", 
-			"text":["다음"]
+			"text":["다음", "전체", "받은메시지", "보낸메시지", "보낸사람", "받은사람", "미확인", "확인일자", "내용보기", "삭제"]
+		},
+		{ //17
+			"page":"landingPage", 
+			"text":["고전의 지혜, 당신의 언어로 새롭게 만나다.", 
+							"영문 고전문학의 깊이를 탐험하고, 언어 능력을 향상시키는 새로운 학습 경험을 시작하세요.", 
+							"차분하고 집중력 높은 환경에서 지식의 여정을 떠날 수 있도록 지원합니다.", 
+							"주요기능:",
+							"라이브러리:", 
+							"다양한 영문 고전문학 작품을 쉽게 검색하고 탐색할 수 있습니다.", 
+							"지능형 번역 지원:", 
+							"Deepl API를 통해 궁금한 단어나 문장을 즉시 한국어 또는 스페인어로 번역하여 몰입감 있는 독서를 돕습니다.", 
+							"최적화된 독서 환경:", 
+							"페이지별로 깔끔하게 구성된 화면에서 편안하게 고전을 음미할 수 있습니다.", 
+							"지금 시작하기"]
 		}
 	], 
 
@@ -209,11 +237,25 @@ const languageSet = {
 		},
 		{ //15
 			"page":"myinfo", 
-			"text":["Nombre", "Introducción", "CARGAR", "ELIMINAR", "GUARDAR"]
+			"text":["Nombre", "Introducción", "CARGAR", "ELIMINAR", "GUARDAR", "Comunidad", "Comentario", "Responder", "Me gusta", "Ir"]
 		},
 		{ //16
 			"page":"messagebox", 
-			"text":["Próximo"]
+			"text":["Próximo", "Total", "Recibida", "Enviar", "Remitente", "Destinataria", "Sin especificar", "Leer", "Ver", "Eliminar" ]
+		},
+		{ //17
+			"page":"landingPage", 
+			"text":["La Sabiduría de los Clásicos, Reimaginada en Tu Idioma.", 
+							"Explora la profundidad de la literatura clásica inglesa y emprende una nueva experiencia de aprendizaje para mejorar tus habilidades lingüísticas.", 
+							"Apoyamos tu viaje al conocimiento en un ambiente tranquilo y enfocado.", 
+							"Características Principales",
+							"Biblioteca:", 
+							"Busca y explora fácilmente innumerables obras de la literatura clásica inglesa.", 
+							"Soporte de Traducción Inteligente:", 
+							"Traduce instantáneamente palabras o frases desconocidas al coreano o español a través de la API de DeepL, mejorando una experiencia de lectura inmersiva.", 
+							"Entorno de Lectura Optimizado:", 
+							"Disfruta cómodamente de los clásicos con un diseño limpio página por página.", 
+							"Empieza ahora"]
 		}
 		
 

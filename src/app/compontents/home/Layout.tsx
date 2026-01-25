@@ -11,11 +11,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   
   return(
     <>
-      <Hearder/>
+      
       {
         (path === "/")?
-        <Main/>:
+        // 랜딩페이지 작성
+        <Main/> 
+        :
         <>
+        <Hearder/>
         {children}
         </> 
       }
