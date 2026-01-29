@@ -444,8 +444,19 @@ const ButtonCommunitySee = (props:any) => {
   ); 
 }
 
+const ButtonHomeTranslator = (props:any) => {
+  return (
+  <button 
+  className={`border border-[#4A6D88] text-[10px] bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold py-0.5 px-2 rounded-md
+  transition-all duration-200 ease-in-out cursor-pointer`}
+  onClick={props.onClick}
+  >{props.text}</button>
+  ); 
+}
+
 export {
   HomeHeaderMenuButton, HomeHeaderSignInButton, HomeHeaderMenuButtonL, HomeHeaderSignInButtonL, ReadingPrev, ReadingNext,
   ButtonTranslator, ButtonHisBookList, ButtonHisBookListNext, ButtonLearning, ButtonBase, ButtonBaseAddTags, ButtonCommentSave,
-  ButtonSubComment, ButtonCommentNext, ButtonMessage, ButtonMessageSee, ButtonMessageNext, ButtonMyInfoNext, ButtonCommunitySee
+  ButtonSubComment, ButtonCommentNext, ButtonMessage, ButtonMessageSee, ButtonMessageNext, ButtonMyInfoNext, ButtonCommunitySee, 
+  ButtonHomeTranslator
 };

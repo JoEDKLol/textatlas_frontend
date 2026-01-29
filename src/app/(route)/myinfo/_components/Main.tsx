@@ -658,7 +658,7 @@ const Main = (props:any) => {
                             <div className="w-full flex justify-between items-center text-[10px] my-1 ">
                               <div className="">{getChangedMongoDBTimestpamp(elem.regdate)}</div>
                               <div className=" pe-1 ">
-                                <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[7]:""}
+                                <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[9]:""}
                                 onClick={
                                 ()=>communityDetail(elem.community_seq)
                                 }
@@ -729,7 +729,7 @@ const Main = (props:any) => {
                           <div className="w-full flex justify-between items-center text-[10px] my-1 ">
                             <div className="">{getChangedMongoDBTimestpamp(elem.regdate)}</div>
                             <div className=" pe-1 ">
-                              <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[7]:""}
+                              <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[9]:""}
                               onClick={
                               ()=>communityDetail(elem.community_seq)
                               }
@@ -780,7 +780,7 @@ const Main = (props:any) => {
                           <div className="w-full flex justify-between items-center text-[10px] my-1 ">
                             <div className="">{getChangedMongoDBTimestpamp(elem.regdate)}</div>
                             <div className=" pe-1 ">
-                              <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[7]:""}
+                              <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[9]:""}
                               onClick={
                               ()=>communityDetail(elem.community_seq)
                               }
@@ -818,7 +818,7 @@ const Main = (props:any) => {
                             <div className="w-full flex justify-between items-center text-[10px] my-1 ">
                               <div className="">{getChangedMongoDBTimestpamp(elem.communityinfo.regdate)}</div>
                               <div className=" pe-1 ">
-                                <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[7]:""}
+                                <ButtonCommunitySee text={(languageStateSet.main_language_set[15])?languageStateSet.main_language_set[15].text[9]:""}
                                 onClick={
                                 ()=>communityDetail(elem.community_seq)
                                 }

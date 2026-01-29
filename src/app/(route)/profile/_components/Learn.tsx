@@ -295,11 +295,15 @@ const Learn = (props:any) => {
 
     const retObj = await transactionAuth("get", "history/learnwordsearch", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){
-      setWordResultOrderType(wordOrderType);
-      setWordList(retObj.sendObj.resObj);
-      const lastArr = retObj.sendObj.resObj.length-1;
-      setWordSearchSeq(retObj.sendObj.resObj[lastArr].seq);
-      setSelectedBookWordPage(1);
+      console.log(retObj.sendObj.resObj);
+
+      if(retObj.sendObj.resObj.length > 0){
+        setWordResultOrderType(wordOrderType);
+        setWordList(retObj.sendObj.resObj);
+        const lastArr = retObj.sendObj.resObj.length-1;
+        setWordSearchSeq(retObj.sendObj.resObj[lastArr].seq);
+        setSelectedBookWordPage(1);
+      }
     }
   }
 
@@ -357,11 +361,14 @@ const Learn = (props:any) => {
 
     const retObj = await transactionAuth("get", "history/learnwordsearch", obj, "", false, true, screenShow, errorShow);
     if(retObj.sendObj.success === "y"){
-      setLearnedWordResultOrderType(wordOrderType);
-      setLearnedWordList(retObj.sendObj.resObj);
-      const lastArr = retObj.sendObj.resObj.length-1;
-      setLearnedWordSearchSeq(retObj.sendObj.resObj[lastArr].seq);
-      // setSelectedLearnWordPage(1);
+
+      if(retObj.sendObj.resObj.length > 0){
+        setLearnedWordResultOrderType(wordOrderType);
+        setLearnedWordList(retObj.sendObj.resObj);
+        const lastArr = retObj.sendObj.resObj.length-1;
+        setLearnedWordSearchSeq(retObj.sendObj.resObj[lastArr].seq);
+      }
+
     }
   }
 
