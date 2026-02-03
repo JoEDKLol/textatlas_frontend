@@ -1,17 +1,33 @@
 'use client';
 
 import { useRouter } from "next/navigation";
+import TermsOfService from "../modals/TermsOfService";
+import { useState } from "react";
+import PrivacyPolicy from "../modals/PrivacyPolicy";
+import ContactUs from "../modals/ContactUs";
 
 const Footer = () => {
   const router = useRouter();
 
-  function goProjectGutenberg(){
+  //termsOfService 팝업
+  const [termsOfServicePotal, setTermsOfServicePotal] = useState(false);
 
+  //PrivacyPolicy 팝업
+  const [privacyPolicyPotal, setPrivacyPolicyPotal] = useState(false);
+
+  //ContactUs 팝업
+  const [contactUsPotal, setContactUsPotal] = useState(false);
+
+  function setShowTermsOfService(yn:boolean){
+    setTermsOfServicePotal(yn);
   }
-  
 
-  function goDeepLTranslator(){
-    
+  function setShowPrivacyPolicy(yn:boolean){
+    setPrivacyPolicyPotal(yn);
+  }
+
+  function setShowContactUsPotal(yn:boolean){
+    setContactUsPotal(yn);
   }
 
   return(
@@ -44,15 +60,21 @@ const Footer = () => {
           <div className="pt-4 pb-2 font-bold text-[12px] opacity-60
           transition-all duration-300 ease-in-out
           hover:opacity-100 cursor-pointer
-          ">Terms of Service</div>
+          "
+          onClick={()=>setShowTermsOfService(true)}
+          >Terms of Service</div>
           <div className="py-2 font-bold text-[12px] opacity-60
            transition-all duration-300 ease-in-out
           hover:opacity-100 cursor-pointer
-          ">Privacy Policy</div>
+          "
+          onClick={()=>setShowPrivacyPolicy(true)}
+          >Privacy Policy</div>
           <div className="py-2 font-bold text-[12px] opacity-60
            transition-all duration-300 ease-in-out
           hover:opacity-100 cursor-pointer
-          ">Contact Us</div>
+          "
+          onClick={()=>setShowContactUsPotal(true)}
+          >Contact Us</div>
 
         </div>
         <div className=" flex flex-col w-full 
@@ -90,7 +112,15 @@ const Footer = () => {
 
         </div>
       </div>
-      <div className="w-full h-[60px] flex justify-center items-center opacity-60 text-[12px] ">© 2026 TextAtlas. All rights reserved.</div>
+      <div className="w-full h-[55px] flex justify-center items-center opacity-60 text-[12px] border-t mt-[7px]  "
+      style={{
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+      }}
+      >© 2026 TextAtlas. All rights reserved.</div>
+      <TermsOfService show={termsOfServicePotal} setShowTermsOfService={setShowTermsOfService} />
+      <PrivacyPolicy show={privacyPolicyPotal} setShowPrivacyPolicy={setShowPrivacyPolicy}/>
+      <ContactUs show={contactUsPotal} setShowContactUsPotal={setShowContactUsPotal}/>
+
     </div>
   );
 };

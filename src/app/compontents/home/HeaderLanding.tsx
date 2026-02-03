@@ -19,6 +19,7 @@ import { MdMessage } from "react-icons/md";
 import MessageBox from "../modals/MessageBox";
 import { transactionAuth } from "@/app/utils/axiosAuth";
 import unreadMessageCnt from "@/app/store/unreadMessageCnt";
+import ContactUs from "../modals/ContactUs";
 
 
 const HeaderLanding = () => {
@@ -44,9 +45,12 @@ const HeaderLanding = () => {
  
 
 
-
+  //ContactUs 팝업
+  const [contactUsPotal, setContactUsPotal] = useState(false);
   
-
+  function setShowContactUsPotal(yn:boolean){
+    setContactUsPotal(yn);
+  }
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [block, setBlock] = useState<string>("  translate duration-300 h-[80px] ")
@@ -69,18 +73,18 @@ const HeaderLanding = () => {
   }, [isMobileMenuOpen]);
 
   const getBrowserLanguage = () => {
-  if (typeof window === "undefined") return "en"; // 서버 사이드 렌더링(SSR) 대비
+    if (typeof window === "undefined") return "en"; // 서버 사이드 렌더링(SSR) 대비
 
-  // 1. 전체 문자열 가져와서 소문자화 (예: 'ko-KR' -> 'ko-kr')
-  const fullLang = (navigator.languages && navigator.languages[0]) || navigator.language || "en";
-  const mainLang = fullLang.toLowerCase();
+    // 1. 전체 문자열 가져와서 소문자화 (예: 'ko-KR' -> 'ko-kr')
+    const fullLang = (navigator.languages && navigator.languages[0]) || navigator.language || "en";
+    const mainLang = fullLang.toLowerCase();
 
-  // 2. 포함 여부로 체크 (가장 안전한 방법)
-  if (mainLang.includes("ko")) return "ko";
-  if (mainLang.includes("es")) return "es";
-  
-  return "en"; // 기본값은 영어
-};
+    // 2. 포함 여부로 체크 (가장 안전한 방법)
+    if (mainLang.includes("ko")) return "ko";
+    if (mainLang.includes("es")) return "es";
+    
+    return "en"; // 기본값은 영어
+  };
 
   const [isOpen, setIsOpen] = useState(false) // 드롭다운이 열려 있는지 상태 관리
   const [selectedOption, setSelectedOption] = useState('') // 기본 선택 옵션
@@ -202,7 +206,9 @@ const HeaderLanding = () => {
             <div className="px-10 cursor-pointer">
               <a href="#aboutus" >About Us</a>
             </div>
-            <div className="px-10 cursor-pointer">
+            <div className="px-10 cursor-pointer"
+            onClick={()=>setShowContactUsPotal(true)}
+            >
               Contact Us
             </div>
           </div>
@@ -304,17 +310,19 @@ const HeaderLanding = () => {
       flex 2xl:hidden   xl:hidden   lg:hidden   md:flex sm:flex
       ">
         <div className="w-full flex justify-center text-white mt-1">
-          <p className="px-10 h-[35px]">
-              Features
+          <p className="px-10 h-[35px] cursor-pointer">
+              <a href="#features" >Features</a>
           </p>
         </div>
         <div className="w-full flex justify-center text-white mt-1">
-          <p className="px-10 h-[35px]">
-              About Us
+          <p className="px-10 h-[35px] cursor-pointer">
+              <a href="#aboutus" >About Us</a>
           </p>
         </div>
         <div className="w-full flex justify-center text-white mt-1">
-          <p className="px-10 h-[35px]">
+          <p className="px-10 h-[35px] cursor-pointer"
+          onClick={()=>setShowContactUsPotal(true)}
+          >
               Contact Us
           </p>
         </div>
@@ -344,7 +352,7 @@ const HeaderLanding = () => {
       <PasswordChange show={showPasswordChangePortal} signInHandleModal={signInHandleModal} passwordChangeHandleModal={passwordChangeHandleModal} signUpHandleModal={signUpHandleModal}/>
       <SignUp show={showSignUpPortal} signInHandleModal={signInHandleModal} passwordChangeHandleModal={passwordChangeHandleModal} signUpHandleModal={signUpHandleModal}/>
       <MessageBox show={showMessageBoxPortal} messageBoxModal={messageBoxModal} userStateSet={userStateSet} /> */}
-      
+      <ContactUs show={contactUsPotal} setShowContactUsPotal={setShowContactUsPotal}/>
     </header>
   );
 };

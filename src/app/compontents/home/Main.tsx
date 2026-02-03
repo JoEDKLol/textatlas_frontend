@@ -15,9 +15,9 @@ const Main = () => {
     <div className="flex flex-col">
       <HeaderLanding/>
       {/* 본문 */}
-      <div className="flex flex-col items-center justify-center mt-[55px] h-[500px] bg-[#2f4d64] opacity-95">
-        <div className="text-center text-white text-[30px] font-bold
-        2xl:text-[45px] xl:text-[45px] lg:text-[45px] md:text-[35px] sm:text-[30px]
+      <div className="flex flex-col items-center justify-center mt-[55px] h-[700px] bg-[#2f4d64] opacity-95">
+        <div className="text-center text-white text-[40px] font-bold
+        2xl:text-[55px] xl:text-[55px] lg:text-[55px] md:text-[45px] sm:text-[40px]
         ">
           <p>
             고전에서 얻는 영감,
@@ -28,8 +28,8 @@ const Main = () => {
           
         </div>
 
-        <div className="text-center text-white text-[15px] pt-5 
-        2xl:text-[20px] xl:text-[20px] lg:text-[20px] md:text-[20px] sm:text-[15px]
+        <div className="text-center text-white text-[20px] pt-5 
+        2xl:text-[25px] xl:text-[25px] lg:text-[25px] md:text-[25px] sm:text-[20px]
         ">
           <p>
             수천 권의 명작 속 위대한 사유를 직접 경험하세요.
