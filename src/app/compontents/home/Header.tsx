@@ -135,7 +135,7 @@ const Hearder = () => {
   }, [isMobileMenuOpen]);
 
   const [isOpen, setIsOpen] = useState(false) // 드롭다운이 열려 있는지 상태 관리
-  const [selectedOption, setSelectedOption] = useState('/flags/us.png') // 기본 선택 옵션
+  const [selectedOption, setSelectedOption] = useState('') // 기본 선택 옵션
 
   const dropdownRef = useRef<HTMLDivElement>(null) // 드롭다운 외부 클릭 감지를 위한 ref
 
@@ -265,13 +265,17 @@ const Hearder = () => {
       userseq:userStateSet.userseq,
     }
 
-    const retObj = await transactionAuth("get", "message/unreadmessagecnt", obj, "", false, true, screenShow, errorShow);
+    const retObj = await transactionAuth("get", "message/unreadmessagecnt", obj, "", false, false, screenShow, errorShow);
     
     if(retObj.sendObj.success === "y"){
       // console.log(retObj.sendObj.resObj);
       unreadMessageCntSet.unreadMessageCntSet(retObj.sendObj.resObj)
     }
   } 
+
+  function go_home(){
+    router.push('/home');
+  }
 
   
   return(
@@ -283,7 +287,9 @@ const Hearder = () => {
       <div className="flex justify-between items-start w-full h-[55px] px-10 mt-[10px]  ">
         
         
-        <div className=" flex flex-col justify-center items-center w-[100px] cursor-pointer ">
+        <div className=" flex flex-col justify-center items-center w-[100px] cursor-pointer "
+        onClick={()=>go_home()}
+        >
           <div className=" relative text-white w-full  justify-items-center " >
             <p className="absolute -z-10 w-[25px] h-[25px] rounded-full bg-blue-400"></p>
             <p className="">
@@ -358,7 +364,9 @@ const Hearder = () => {
               className="flex w-full cursor-pointer items-center justify-end pt-[3px]  "
             >
               <p className="flex justify-center  w-[35px] h-[25px]">
-                <img src={selectedOption} className=""/>
+                {
+                  (selectedOption)?<img src={selectedOption} className=""/>:""
+                }
               </p>
             </div>
 

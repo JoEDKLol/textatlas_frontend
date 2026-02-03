@@ -1,6 +1,8 @@
 'use client';
 import { ButtonHomeTranslator, ButtonSubComment } from "@/app/compontents/design/buttons/Buttons";
 import errorScreenShow from "@/app/store/errorScreen";
+import homeState from "@/app/store/home";
+import homeScrollPositon from "@/app/store/homeScrollPosition";
 import languageState from "@/app/store/language";
 import loadingScreenShow from "@/app/store/loadingScreen";
 import { transaction } from "@/app/utils/axios";
@@ -108,10 +110,10 @@ const Main = (props:any) => {
 
   const router = useRouter();
   const languageStateSet = languageState();
-  
-  
+  const homeStateSet = homeState();
   const screenShow = loadingScreenShow();
   const errorShow = errorScreenShow();
+  const homeScrollPositonSet = homeScrollPositon();
 
   const [newBookList, setNewBookList] = useState<bookListItf>([]);
   
@@ -126,31 +128,49 @@ const Main = (props:any) => {
   
   
   useEffect(()=>{
-    firstReadingsTotalSearch();
-  },[]);
+    if(!homeStateSet.searchYn){
+      firstReadingsTotalSearch();
+    }
+  },[homeStateSet.searchYn]);
+
+  useEffect(() => {
+
+    if(parseInt(homeScrollPositonSet.scrollY) > 0){
+      window.scrollTo(0, parseInt(homeScrollPositonSet.scrollY, 10));
+    }
+
+    const handleScroll = () => {
+      homeScrollPositonSet.scrollYSet(window.scrollY.toString());
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // setFirstSearch(true);
+    
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); // 빈 배열은 마운트/언마운트 시에만 실행
 
   
 
   //최초조회
   async function firstReadingsTotalSearch(){
-
-    
-
     const obj = {
       currentPage:1,
     }
-
-    
     // 10개까지 보여줌
     const retObj = await transaction("get", "book/homebooksearch", obj, "", false, true, screenShow, errorShow);
     // console.log(retObj);
     if(retObj.sendObj.success === "y"){
-      console.log(retObj.sendObj.resObj);
-      setNewBookList(retObj.sendObj.resObj.books);
-      setCommunityList(retObj.sendObj.resObj.communities);
-      setHotWordList(retObj.sendObj.resObj.hotwords);
-      setHotSentenceList(retObj.sendObj.resObj.hotsentences);
-       
+      homeStateSet.bookListSet(retObj.sendObj.resObj.books);
+      homeStateSet.communityListSet(retObj.sendObj.resObj.communities);
+      homeStateSet.hotWordListSet(retObj.sendObj.resObj.hotwords);
+      console.log(retObj.sendObj.resObj.hotsentences);
+      homeStateSet.hotSentenceListSet(retObj.sendObj.resObj.hotsentences);
+      homeStateSet.searchYnSet(true);
+
       
     }   
   }
@@ -178,33 +198,27 @@ const Main = (props:any) => {
   const [flipped, setFlipped] = useState(false);
 
   function clickWordCard(index:number){
-    
-    
 
-    if(hotWordList[index].showYn){
-      hotWordList[index].showYn = false;
+    if(homeStateSet.hotWordList[index].showYn){
+      homeStateSet.setHotWordShowYn(index, false);
     }else{
-      hotWordList[index].showYn = true;
+      homeStateSet.setHotWordShowYn(index, true);
     }
-
-    setHotWordList([...hotWordList]);
 
   }
   
   function translator(index:number){
-    if(hotSentenceList[index].translatorYn){
-      hotSentenceList[index].translatorYn = false;
+    if(homeStateSet.hotSentenceList[index].translatorYn){
+      homeStateSet.setTranslatorYn(index, false);
     }else{
-      hotSentenceList[index].translatorYn = true;
+      homeStateSet.setTranslatorYn(index, true);
     }
-
-    setHotSentenceList([...hotSentenceList]);
   }
 
   function changeTranslatorLang(index:number, lang:string){
-    hotSentenceList[index].currentLang = lang;
-    setHotSentenceList([...hotSentenceList]);
-
+    // hotSentenceList[index].currentLang = lang;
+    // setHotSentenceList([...hotSentenceList]);
+    homeStateSet.setCurrentLang(index, lang);
   }
 
   return(
@@ -214,7 +228,7 @@ const Main = (props:any) => {
         <div className="flex flex-col w-[300px]   mb-5  2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
           <div className="mb-[7px]  flex justify-between items-center w-full ">
             <div className="text-2xl font-bold text-[#4A6D88]">
-              <button className="">최신 업데이트 작품</button>
+              <button className="">{(languageStateSet.main_language_set[4])?languageStateSet.main_language_set[0].text[5]:""}</button>
             </div>
             <div className="flex text-lg font-bold text-[#4A6D88] pe-1 ">
               <button className="items-center cursor-pointer
@@ -232,8 +246,9 @@ const Main = (props:any) => {
         {/* 최신 업데이트 작품 */}
         <div className="w-[300px] flex flex-wrap justify-start   2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
           {
-            newBookList.map((elem, index)=>{
-              return(
+            // newBookList.map((elem, index)=>{
+            homeStateSet.bookList.map((elem, index)=>{ 
+            return(
                 <div key={index + elem._id} className=" w-[120px] h-[210px] shadow-md shadow-[#4A6D88] rounded-b-md cursor-pointer m-3
                 transition-transform duration-300 ease-in-out
                 hover:scale-105 transform
@@ -288,7 +303,7 @@ const Main = (props:any) => {
         <div className="mt-10 flex flex-col w-[300px]   mb-5  2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
           <div className="mb-[7px]  flex justify-between items-center w-full ">
             <div className="text-2xl font-bold text-[#4A6D88]">
-              <button className="">최신 커뮤니티 글</button>
+              <button className="">{(languageStateSet.main_language_set[4])?languageStateSet.main_language_set[0].text[6]:""}</button>
             </div>
             <div className="flex text-lg font-bold text-[#4A6D88] pe-1 ">
               <button className="items-center cursor-pointer
@@ -306,7 +321,7 @@ const Main = (props:any) => {
         <div className="w-[300px] flex flex-wrap justify-start   2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]   ">
 
           {
-            communityList.map((elem, index)=>{
+            homeStateSet.communityList.map((elem, index)=>{
               return (
                 <div key={index+"community"} className="w-[100%]  p-2
                 2xl:w-1/3  xl:w-1/3  lg:w-1/3  md:w-1/2  sm:w-[580px] cursor-pointer ">
@@ -342,7 +357,7 @@ const Main = (props:any) => {
         <div className="mt-10 flex flex-col w-[300px]   mb-5  2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
           <div className="mb-[7px]  flex justify-between items-center w-full ">
             <div className="text-2xl font-bold text-[#4A6D88]">
-              <button className="">많이 찾은 단어</button>
+              <button className="">{(languageStateSet.main_language_set[4])?languageStateSet.main_language_set[0].text[7]:""}</button>
             </div>
             <div className="flex text-lg font-bold text-[#4A6D88] pe-1 ">
               <button className="items-center cursor-pointer
@@ -359,7 +374,7 @@ const Main = (props:any) => {
         </div>
         <div className="w-[300px] flex flex-wrap justify-start   2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
           {
-            hotWordList.map((elem, index)=>{
+            homeStateSet.hotWordList.map((elem, index)=>{
               return(
               <div key={index+"hotword"} className="w-[100%]  p-2  2xl:w-1/6  xl:w-1/6  lg:w-1/6  md:w-1/3  sm:w-1/2  ">
                 {/* <div className="border text-[14pxs] font-bold w-full h-[120px] flex justify-center items-center rounded-lg">
@@ -450,7 +465,7 @@ const Main = (props:any) => {
         <div className="mt-10 flex flex-col w-[300px]   mb-5  2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
           <div className="mb-[7px]  flex justify-between items-center w-full ">
             <div className="text-2xl font-bold text-[#4A6D88]">
-              <button className="">많이 찾은 문장</button>
+              <button className="">{(languageStateSet.main_language_set[4])?languageStateSet.main_language_set[0].text[8]:""}</button>
 
             </div>
             <div className="flex text-lg font-bold text-[#4A6D88] pe-1 ">
@@ -468,7 +483,7 @@ const Main = (props:any) => {
         </div>
         <div className="w-[300px] flex flex-wrap justify-start   2xl:w-[1160px]  xl:w-[1160px]  lg:w-[1010px]  md:w-[730px]  sm:w-[580px]  ">
             {
-              hotSentenceList.map((elem, index)=>{
+              homeStateSet.hotSentenceList.map((elem, index)=>{
                 return(
                 <div key={index+"hotsentence"} className="flex flex-col w-[100%] ">
                   <div className=" flex justify-start items-end font-bold ">
@@ -562,7 +577,7 @@ const Main = (props:any) => {
           
           </div>
 
-        <div className="my-10"></div>
+        {/* <div className="mt-10 "></div> */}
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import { languageSet } from "@/app/jsons/languageSet";
 import errorScreenShow from "@/app/store/errorScreen";
 import languageState from "@/app/store/language";
 import loadingScreenShow from "@/app/store/loadingScreen";
+import loadingScreenEmptyShow from "@/app/store/loadingScreen_empty";
 import userState from "@/app/store/user";
 import { transaction } from "@/app/utils/axios";
 import { transactionAuth } from "@/app/utils/axiosAuth";
@@ -26,6 +27,7 @@ const CommonTransaction = ({ children }: any) => {
 
   const languageStateSet = languageState();
   const screenShow = loadingScreenShow();
+  const screenShow2 = loadingScreenEmptyShow();
   const errorShow = errorScreenShow();
 
   const path = usePathname();
@@ -112,7 +114,7 @@ const CommonTransaction = ({ children }: any) => {
   }, [path]);
     
   async function getAccessTokenApi(){
-      const retObj = await transaction("get", "user/getAccessToken", {}, "", false, false, screenShow, errorShow);
+      const retObj = await transaction("get", "user/getAccessToken", {}, "", false, false, screenShow2, errorShow);
       if(retObj.sendObj.code === "2000"){
         //유저정보는 zustand
         //access토큰 정보는 session storege클래스에 담아준다.
@@ -125,7 +127,7 @@ const CommonTransaction = ({ children }: any) => {
   }
 
   async function getAccessTokenCheck(){  
-    const retObj = await transactionAuth("post", "user/checkaccessToken", {}, "", false, false, screenShow, errorShow);
+    const retObj = await transactionAuth("post", "user/checkaccessToken", {}, "", false, false, screenShow2, errorShow);
     // console.log("토큰검증"); 
     if(retObj.sendObj.success === 'y'){
       userStateSet.userSet(retObj.sendObj.resObj);

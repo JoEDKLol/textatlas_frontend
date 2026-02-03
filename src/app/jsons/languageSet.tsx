@@ -5,7 +5,7 @@ const languageSet = {
   
 		{
 		"page":"header", 
-		"text":["HOME", "READING MATERIAL", "MY HISTORY", "COMMUNITY", "MY INFO"]
+		"text":["HOME", "READING MATERIAL", "MY HISTORY", "COMMUNITY", "MY INFO", "Latest Additions", "Community Highlights", "Trending Words", "Popular Phrases"]
 		},
 		{
 			"page":"signin", 
@@ -92,7 +92,7 @@ const languageSet = {
 		"text_by_language_kr" : [
 		{
 			"page":"header", 
-			"text":["홈", "읽을거리", "나의 히스토리", "커뮤니티", "내정보"]
+			"text":["홈", "읽을거리", "나의 히스토리", "커뮤니티", "내정보", "최신 업데이트 작품", "최신 커뮤니티 글", "많이 찾은 단어", "많이 찾은 문장" ]
 		},
 		{
 			"page":"signin", 
@@ -177,7 +177,7 @@ const languageSet = {
   "text_by_language_mx" : [
 		{
 			"page":"header", 
-			"text":["HOGAR", "MATERIAL DE LECTURA", "MI HISTORIA", "COMUNIDAD", "MI INFO"]
+			"text":["HOGAR", "MATERIAL DE LECTURA", "MI HISTORIA", "COMUNIDAD", "MI INFO","Últimas novedades",	 "Lo último en la comunidad", "Palabras populares", "Frases populares", ]
 		},
 		{
 			"page":"signin", 

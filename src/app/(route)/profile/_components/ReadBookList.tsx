@@ -628,7 +628,6 @@ const ReadBookList = (props:any) => {
                           </div>
                         </div>
                       </div>
-
                     </div>
                   )
                 })
@@ -636,7 +635,7 @@ const ReadBookList = (props:any) => {
               
             </div>
           
-            <div className="flex flex-wrap justify-end mt-10
+            <div className="flex flex-wrap justify-end mt-5
             w-[330px] 2xl:w-[1050px]  xl:w-[1050px]  lg:w-[600px]  md:w-[330px]  sm:w-[330px]
             ">
               <p> {/* 다음  */}

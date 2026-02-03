@@ -86,6 +86,8 @@ const Main = (props:any) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const [pageTranslateYn, setPageTranslateYn] = useState<boolean>(false); //페이지 전체 번역 여부
+
+  const [readcompletedt, setReadcompletedt] = useState("");
   
   useEffect(() => {
     // console.log(path.split("/")[2]);
@@ -124,6 +126,10 @@ const Main = (props:any) => {
     const retObj = await transactionAuth("post", "reading/readingbypage", obj, "", false, true, screenShow, errorShow);  
     // console.log(retObj);
     if(retObj.sendObj.success === "y"){ 
+
+      // console.log(retObj.sendObj.resObj.readcompletedt);
+
+      setReadcompletedt(retObj.sendObj.resObj.readcompletedt);
 
       setPageTranslateYn(false);
       
@@ -371,6 +377,21 @@ const Main = (props:any) => {
       setPageTranslateYn(false);
     }else{
       setPageTranslateYn(true);
+    }
+  }
+
+  //책완료 처리
+  async function finishBook(){
+    const obj = {
+      userseq:userStateSet.userseq, 
+      book_seq:book_seq,
+    }
+
+    const retObj = await transactionAuth("post", "reading/finishbook", obj, "", false, true, screenShow, errorShow);
+    if(retObj.sendObj.success === "y"){
+      setReadcompletedt(retObj.sendObj.resObj);
+      // setWordSaveBtnDisabled(true);
+      // setSelectedWordInfo({...selectedWordInfo, sentenceSaveYn:true});
     }
   }
 
@@ -705,16 +726,26 @@ const Main = (props:any) => {
 
         <div className="flex items-center">
           
-          {/* <button className="border border-[#4A6D88] w-[36px] text-lg bg-white text-[#4A6D88] hover:bg-[#4A6D88] hover:text-white font-bold  rounded
-          transition-all duration-200 ease-in-out cursor-pointer ps-2 py-[2px]
-          "
-          onClick={()=>nextPage()}
-          >
-            <GrFormNextLink/>
-          </button> */}
-          <ReadingNext onClick={()=>nextPage()} 
-          disabled={(currentPage === bookDetail?.total_pages)?true:false}
-          />
+
+          {
+
+            (!readcompletedt)?//책완료가 아닌 경우
+              (currentPage === bookDetail?.total_pages)?  
+              <ReadingNext onClick={()=>finishBook()} 
+                disabled={false}
+              />
+              :<ReadingNext onClick={()=>nextPage()} 
+                disabled={false}
+              />
+            :(currentPage === bookDetail?.total_pages)?
+            <ReadingNext onClick={()=>finishBook()} 
+              disabled={true}
+            />
+            :<ReadingNext onClick={()=>nextPage()} 
+              disabled={false}
+            />
+          }
+
         </div>
       </div>
       <div></div>

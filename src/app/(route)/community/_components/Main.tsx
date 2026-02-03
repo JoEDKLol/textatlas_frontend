@@ -308,7 +308,7 @@ const Main = (props:any) => {
                       border border-[#4A6D88] bg-white h-[30px] px-3 pr-6 rounded text-sm focus:outline-none"
                       onChange={(e)=>searchTextOnChangeHandler(e)}
                       onKeyDown={(e)=>searchTextOnKeyDownHandler(e)}
-                      value={communityStateSet.text}
+                      value={communityStateSet.text} 
                       />
                       <button className="absolute right-0 top-0 mt-[7px] mr-2 text-[#4A6D88] cursor-pointer
                       transition-transform duration-300 ease-in-out
