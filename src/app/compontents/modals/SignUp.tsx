@@ -142,6 +142,23 @@ const SignUp = (props:any) => {
     props.signUpHandleModal(false);
     props.signInHandleModal(true);
   }
+
+  useEffect(()=>{
+    let totalByte = 0;
+    for(let i =0; i < verifyEmail.length; i++) {
+      const currentByte = verifyEmail.charCodeAt(i);
+      if(currentByte > 128){
+        totalByte += 2;
+      }else {
+        totalByte++;
+      }
+
+      if(totalByte > 254){
+        setVerifyEmail(verifyEmail.substring(0, i));
+        break;
+      }
+    }
+  },[verifyEmail]);
   
   function emailOnChangeHandler(e:any){
     setVerifyEmail(e.target.value);

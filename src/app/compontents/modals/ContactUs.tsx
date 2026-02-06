@@ -16,13 +16,19 @@ import Image from "next/legacy/image";
 import { ButtonHisBookList } from "../design/buttons/Buttons";
 import { useRouter } from "next/navigation";
 import { MdClose } from "react-icons/md";
-import { LuDot } from "react-icons/lu";
-
+// import { headers } from 'next/headers';
 
 
 const ContactUs = (props:any) => {
   const router = useRouter();
   const languageStateSet = languageState();
+  const screenShow = loadingScreenShow();
+  const errorShow = errorScreenShow();
+  const userStateSet = userState();
+  
+  const focusEmail = useRef<HTMLInputElement>(null);
+  const focusContent = useRef<HTMLTextAreaElement>(null);
+  
 
   //문의사항
   const [inquiry, setInquiry] = useState("general");
@@ -33,6 +39,12 @@ const ContactUs = (props:any) => {
   //문의내용상세
   const [content, setContent] = useState("");
   
+  //이름 - 허니팟
+  const [nameField, setNameField] = useState("");
+
+  //content msg
+  const [contentMsg, setContentMsg] = useState("");
+
   //바디 스크롤 없애기
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -53,6 +65,45 @@ const ContactUs = (props:any) => {
       setIsOpen(true); 
     }
   },[props.show])
+
+  useEffect(()=>{
+    let totalByte = 0;
+    for(let i =0; i < receiveEmail.length; i++) {
+      const currentByte = receiveEmail.charCodeAt(i);
+      // if(currentByte > 128){
+      //   totalByte += 2;
+      // }else {
+      //   totalByte++;
+      // }
+
+      totalByte++;
+
+      if(totalByte > 254){
+        setReceiveEmail(receiveEmail.substring(0, i));
+        break;
+      }
+    }
+  },[receiveEmail]);
+
+  useEffect(()=>{
+    let totalByte = 0;
+    for(let i =0; i < content.length; i++) {
+      const currentByte = content.charCodeAt(i);
+      // if(currentByte > 128){
+      //   totalByte += 2;
+      // }else {
+      //   totalByte++;
+      // }
+
+      totalByte++;
+      if(totalByte > 1000){
+        setContent(content.substring(0, i));
+        break;
+      }
+    }
+  },[content]);
+
+  // 
 
   function textareaOnchange(e:any){
     setContent(e.target.value);
@@ -75,9 +126,55 @@ const ContactUs = (props:any) => {
     setInquiry(e.target.value);
   }
 
-  async function send() {
-    
+  
+  function nameFieldOnchange(e:any){
+    setNameField(e.target.value);
   }
+  
+  async function send() {
+
+    // const headerList = headers();
+    // const clientIp = headerList?.get('x-forwarded-for') || 'unknown' as any;
+
+    if(nameField || nameField.length > 0){
+      return;
+    }
+
+    setContentMsg("");
+
+    const obj = {
+      email:receiveEmail,
+      inquiry:inquiry,
+      content:content,
+      userinfo:userStateSet.id,
+      nameField:nameField,
+      useremail:userStateSet.email,
+      language:languageStateSet.current_language
+    }
+
+
+    const resEmailCheck = checkEmail(obj, languageStateSet.current_language);
+    if(!resEmailCheck.yn){
+      focusEmail.current?.focus();
+      return;
+    }
+    
+
+    if(content.length < 20){
+      setContentMsg("문의 내용을 20자 이상 입력해주에요.");
+      focusContent.current?.focus();
+      return;
+    }
+    
+  
+
+    const retObj = await transaction("post", "administrator/contactussend", obj, "", false, true, screenShow, errorShow);
+    if(retObj.sendObj.success === "y"){
+
+    }
+  }
+
+
   
 
   return (
@@ -110,16 +207,17 @@ const ContactUs = (props:any) => {
                 value={inquiry}
                 onChange={(e)=>selectOption(e)}
                 >
-                  <option className="" value="general">일반 문의</option>
-                  <option value="bug">버그 신고</option>
-                  <option value="book">도서 추가 요청</option>
-                  <option value="community">커뮤니티/쪽지 관련 문의</option>
+                  <option className="" value="01">일반 문의</option>
+                  <option value="02">버그 신고</option>
+                  <option value="03">도서 추가 요청</option>
+                  <option value="04">커뮤니티/쪽지 관련 문의</option>
                 </select>
               </div>
               <div className="w-full text-[#666] text-[13px] mt-3">
                 <input placeholder="답변받을 이메일 주소" className="w-full  p-[7px] border-[1px] border-[#ddd] rounded-[5px] "
                 value={receiveEmail}
                 onChange={(e)=>emailOnchange(e)}
+                ref={focusEmail}
                 />
               </div>
 
@@ -128,7 +226,16 @@ const ContactUs = (props:any) => {
                 rows={5}
                 value={content}
                 onChange={(e)=>textareaOnchange(e)}
+                ref={focusContent}
                 />
+              </div>
+              <div className="w-full flex justify-between text-xs text-red-400">
+                <div>
+                  {contentMsg}
+                </div>
+                <div>
+                  {content.length + "/" + 1000}
+                </div>
               </div>
 
               <div className="w-full flex justify-center items-center mt-3">
@@ -155,6 +262,30 @@ const ContactUs = (props:any) => {
               <div className="flex justify-center items-center mt-5 text-[12px] text-[#999] ">
                 또는 직접 메일 보내기&nbsp;:&nbsp; <a href="mailto:daeheekim0707@gmail.com" className="text-[#4A6D88]">daeheekim0707@gmail.com</a>
 
+              </div>
+
+              <div className="w-full text-[#666] text-[13px] mt-3" 
+                style={{
+                  opacity: 0, 
+                  position: 'absolute', 
+                  top: 0, 
+                  left: 0, 
+                  height: 0, 
+                  width: 0, 
+                  zIndex: -1
+                }}
+                aria-hidden="true"
+                >
+                <label htmlFor="confirm_email">이 필드는 비워두세요</label>
+                <input 
+                id="name_field"
+                name="name_field"
+                className="w-full "
+                value={nameField}
+                onChange={(e)=>nameFieldOnchange(e)}
+                autoComplete="off"
+                tabIndex={-1}
+                />
               </div>
 
             </div>

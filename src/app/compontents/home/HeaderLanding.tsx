@@ -201,12 +201,17 @@ const HeaderLanding = () => {
           <div className=" hidden 2xl:flex   xl:flex   lg:flex   md:hidden sm:hidden mt-[5px] w-full
              justify-center  items-center ms-3 me-3 font-bold  text-white  ">
             <div className="px-10 cursor-pointer ">
-              <a href="#features" >Features</a>
+              <a href="#features" className="
+              transition-transform duration-300 ease-in-out
+              hover:scale-110 transform inline-block " >Features</a>
               </div>
             <div className="px-10 cursor-pointer">
-              <a href="#aboutus" >About Us</a>
+              <a href="#aboutus" className="
+              transition-transform duration-300 ease-in-out
+              hover:scale-110 transform inline-block " >About Us</a>
             </div>
-            <div className="px-10 cursor-pointer"
+            <div className="px-10 cursor-pointer transition-transform duration-300 ease-in-out
+              hover:scale-110 transform  "
             onClick={()=>setShowContactUsPotal(true)}
             >
               Contact Us

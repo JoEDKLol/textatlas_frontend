@@ -188,6 +188,8 @@ const checkEmail = (emObj:any, language:string) => {
     return retObj;
   }
 
+  console.log(emObj.email);
+
   if(!e_regExp.test(emObj.email)){
     retObj.yn = false;
     retObj.field = "email";
